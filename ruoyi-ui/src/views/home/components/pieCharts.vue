@@ -16,8 +16,6 @@ export default {
         dataset: {
           source: [
             ["AR内容数量", 41],
-            ["VR内容数量", 86],
-            ["合作案例数量", 24],
           ],
         },
         tooltip: {
@@ -76,8 +74,6 @@ export default {
       getHomeData().then((response) => {
         const data = [
           ["AR内容数量", response.arContentCount],
-          ["VR内容数量", response.vrContentCount],
-          ["合作案例数量", response.cooperationCaseCount],
         ];
         this.dataSrc = data;
       });
