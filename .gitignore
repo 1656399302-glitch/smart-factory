@@ -1,0 +1,73 @@
+######################################################################
+# Build Tools
+
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+######################################################################
+# IDE
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### JRebel ###
+rebel.xml
+
+### NetBeans ###
+nbproject/private/
+build/*
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+######################################################################
+# Others
+*.log
+*.xml.versionsBackup
+*.swp
+
+!*/build/*.java
+!*/build/*.html
+!*/build/*.xml
+
+# 下面是个人配置, 暂不提交避免配置冲突
+ruoyi-ui/.eslintignore
+ruoyi-ui/.eslintrc.js
+ruoyi-admin/src/main/resources/application-druid.yml
+
+# 日志文件
+logs/
+*.log
+ruoyi-admin/logs/
+ruoyi-admin/backend.pid
+frontend.pid
+
+# 敏感信息文件
+password.txt
+doc/密码
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db

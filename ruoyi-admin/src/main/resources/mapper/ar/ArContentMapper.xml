@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ar.mapper.ArContentMapper">
+    
+    <resultMap type="ArContent" id="ArContentResult">
+        <result property="arContentId"    column="ar_content_id"    />
+        <result property="name"    column="name"    />
+        <result property="category"    column="category"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="description"    column="description"    />
+        <result property="usageStatus"    column="usage_status"    />
+        <result property="qrCodeId"    column="qr_code_id"    />
+    </resultMap>
+
+    <sql id="selectArContentVo">
+        select ar_content_id, name, category, file_url, description, usage_status, qr_code_id from ar_content
+    </sql>
+
+    <select id="selectArContentList" parameterType="ArContent" resultMap="ArContentResult">
+        <include refid="selectArContentVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="category != null  and category != ''"> and category = #{category}</if>
+            <if test="usageStatus != null  and usageStatus != ''"> and usage_status = #{usageStatus}</if>
+            <if test="qrCodeId != null">
+                <choose>
+                    <!-- 当传入 qrCodeId=0 时，查询 qr_code_id 为 null 的记录 -->
+                    <when test="qrCodeId == 0">
+                        and qr_code_id is null
+                    </when>
+                    <!-- 其他值时查询等于该值的记录 -->
+                    <otherwise>
+                        and qr_code_id = #{qrCodeId}
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectArContentByArContentId" parameterType="Long" resultMap="ArContentResult">
+        <include refid="selectArContentVo"/>
+        where ar_content_id = #{arContentId}
+    </select>
+
+    <insert id="insertArContent" parameterType="ArContent" useGeneratedKeys="true" keyProperty="arContentId">
+        insert into ar_content
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="category != null and category != ''">category,</if>
+            <if test="fileUrl != null and fileUrl != ''">file_url,</if>
+            <if test="description != null">description,</if>
+            <if test="usageStatus != null">usage_status,</if>
+            <if test="qrCodeId != null">qr_code_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="category != null and category != ''">#{category},</if>
+            <if test="fileUrl != null and fileUrl != ''">#{fileUrl},</if>
+            <if test="description != null">#{description},</if>
+            <if test="usageStatus != null">#{usageStatus},</if>
+            <if test="qrCodeId != null">#{qrCodeId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateArContent" parameterType="ArContent">
+        update ar_content
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="category != null and category != ''">category = #{category},</if>
+            <if test="fileUrl != null and fileUrl != ''">file_url = #{fileUrl},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="usageStatus != null">usage_status = #{usageStatus},</if>
+            <choose>
+                <when test="qrCodeId == 0">
+                    qr_code_id = NULL,
+                </when>
+                <!-- 允许 qrCodeId 为 null 时也清空 -->
+                <otherwise>
+                    qr_code_id = #{qrCodeId},
+                </otherwise>
+            </choose>
+        </trim>
+        where ar_content_id = #{arContentId}
+    </update>
+
+    <delete id="deleteArContentByArContentId" parameterType="Long">
+        delete from ar_content where ar_content_id = #{arContentId}
+    </delete>
+
+    <delete id="deleteArContentByArContentIds" parameterType="String">
+        delete from ar_content where ar_content_id in 
+        <foreach item="arContentId" collection="array" open="(" separator="," close=")">
+            #{arContentId}
+        </foreach>
+    </delete>
+</mapper>

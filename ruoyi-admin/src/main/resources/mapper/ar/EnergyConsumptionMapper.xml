@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ar.mapper.EnergyConsumptionMapper">
+    
+    <resultMap type="EnergyConsumption" id="EnergyConsumptionResult">
+        <result property="id"    column="id"    />
+        <result property="energyConsumed"    column="energy_consumed"    />
+        <result property="unit"    column="unit"    />
+        <result property="type"    column="type"    />
+        <result property="year"    column="year"    />
+        <result property="month"    column="month"    />
+        <result property="factoryId"    column="factory_id"    />
+    </resultMap>
+
+    <sql id="selectEnergyConsumptionVo">
+        select id, energy_consumed, unit, type, year, month, factory_id from energy_consumption
+    </sql>
+
+    <select id="selectEnergyConsumptionList" parameterType="EnergyConsumption" resultMap="EnergyConsumptionResult">
+        <include refid="selectEnergyConsumptionVo"/>
+        <where>  
+            <if test="energyConsumed != null "> and energy_consumed = #{energyConsumed}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="year != null "> and year = #{year}</if>
+            <if test="month != null "> and month = #{month}</if>
+            <if test="factoryId != null  and factoryId != ''"> and factory_id = #{factoryId}</if>
+        </where>
+    </select>
+    
+    <select id="selectEnergyConsumptionById" parameterType="Long" resultMap="EnergyConsumptionResult">
+        <include refid="selectEnergyConsumptionVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEnergyConsumption" parameterType="EnergyConsumption" useGeneratedKeys="true" keyProperty="id">
+        insert into energy_consumption
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="energyConsumed != null">energy_consumed,</if>
+            <if test="unit != null and unit != ''">unit,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="year != null">year,</if>
+            <if test="month != null">month,</if>
+            <if test="factoryId != null and factoryId != ''">factory_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="energyConsumed != null">#{energyConsumed},</if>
+            <if test="unit != null and unit != ''">#{unit},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="year != null">#{year},</if>
+            <if test="month != null">#{month},</if>
+            <if test="factoryId != null and factoryId != ''">#{factoryId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEnergyConsumption" parameterType="EnergyConsumption">
+        update energy_consumption
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="energyConsumed != null">energy_consumed = #{energyConsumed},</if>
+            <if test="unit != null and unit != ''">unit = #{unit},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="month != null">month = #{month},</if>
+            <if test="factoryId != null and factoryId != ''">factory_id = #{factoryId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEnergyConsumptionById" parameterType="Long">
+        delete from energy_consumption where id = #{id}
+    </delete>
+
+    <delete id="deleteEnergyConsumptionByIds" parameterType="String">
+        delete from energy_consumption where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
