@@ -19,59 +19,49 @@ echo "  AR/VR数字孪生管理系统 - 一键启动"
 echo "========================================"
 echo ""
 
-# 检查Java环境
-echo -e "${BLUE}[1/4]${NC} 检查Java环境..."
-if ! command -v java &> /dev/null; then
-    echo -e "${RED}[错误]${NC} 未检测到Java环境，请先安装JDK 1.8或更高版本"
-    exit 1
-fi
-echo -e "${GREEN}[成功]${NC} Java环境检测通过"
-echo ""
-
-# 检查Maven环境
-echo -e "${BLUE}[2/4]${NC} 检查Maven环境..."
+# 判断使用Maven还是jar包启动
 USE_JAR=0
 if ! command -v mvn &> /dev/null; then
-    echo -e "${YELLOW}[警告]${NC} 未检测到Maven环境，将尝试使用jar包启动"
     USE_JAR=1
-else
-    echo -e "${GREEN}[成功]${NC} Maven环境检测通过"
 fi
-echo ""
 
-# 检查Node.js环境
-echo -e "${BLUE}[3/4]${NC} 检查Node.js环境..."
-if ! command -v node &> /dev/null; then
-    echo -e "${RED}[错误]${NC} 未检测到Node.js环境，请先安装Node.js"
-    exit 1
-fi
-echo -e "${GREEN}[成功]${NC} Node.js环境检测通过"
-echo ""
-
-# 检查npm环境
-if ! command -v npm &> /dev/null; then
-    echo -e "${RED}[错误]${NC} 未检测到npm环境，请先安装npm"
-    exit 1
-fi
-echo -e "${GREEN}[成功]${NC} npm环境检测通过"
-echo ""
-
-# 检查前端依赖
-echo -e "${BLUE}[4/4]${NC} 检查前端依赖..."
-cd ruoyi-ui
-if [ ! -d "node_modules" ]; then
-    echo -e "${YELLOW}[提示]${NC} 前端依赖未安装，正在安装..."
-    npm install
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}[错误]${NC} 前端依赖安装失败"
-        exit 1
+# 检查是否需要编译
+NEED_BUILD=0
+if [ $USE_JAR -eq 1 ]; then
+    # 使用jar包启动，检查jar包是否存在
+    if [ ! -f "ruoyi-admin/target/ruoyi-admin.jar" ]; then
+        NEED_BUILD=1
     fi
-    echo -e "${GREEN}[成功]${NC} 前端依赖安装完成"
 else
-    echo -e "${GREEN}[成功]${NC} 前端依赖已存在"
+    # 使用Maven启动，检查模块是否已编译
+    if [ ! -d "ruoyi-common/target/classes" ] || [ ! -d "ruoyi-system/target/classes" ] || [ ! -d "ruoyi-framework/target/classes" ]; then
+        NEED_BUILD=1
+    fi
 fi
-cd ..
-echo ""
+
+# 如果需要编译，先编译项目
+if [ $NEED_BUILD -eq 1 ]; then
+    echo "========================================"
+    echo "  正在编译项目..."
+    echo "========================================"
+    echo ""
+    echo -e "${YELLOW}[提示]${NC} 首次启动需要编译项目，这可能需要几分钟..."
+    
+    if [ $USE_JAR -eq 1 ]; then
+        echo -e "${RED}[错误]${NC} 未找到jar包且Maven未安装，无法编译项目"
+        echo -e "${YELLOW}[提示]${NC} 请先安装Maven或手动执行 mvn clean package 打包"
+        exit 1
+    else
+        # 编译并安装所有模块到本地仓库
+        mvn clean install -DskipTests > logs/build.log 2>&1
+        if [ $? -ne 0 ]; then
+            echo -e "${RED}[错误]${NC} 项目编译失败，请查看日志: logs/build.log"
+            exit 1
+        fi
+        echo -e "${GREEN}[成功]${NC} 项目编译完成"
+        echo ""
+    fi
+fi
 
 # 启动后端
 echo "========================================"
@@ -90,7 +80,7 @@ if [ $USE_JAR -eq 1 ]; then
         cd ../..
         echo -e "${GREEN}[成功]${NC} 后端服务已启动，PID: $BACKEND_PID"
     else
-        echo -e "${RED}[错误]${NC} 未找到jar包，请先执行 mvn clean package 打包"
+        echo -e "${RED}[错误]${NC} 未找到jar包"
         exit 1
     fi
 else
@@ -125,12 +115,35 @@ echo "========================================"
 echo ""
 
 cd ruoyi-ui
-nohup npm run dev > ../logs/frontend.log 2>&1 &
+# 启动前端服务
+npm run dev > ../logs/frontend.log 2>&1 &
 FRONTEND_PID=$!
 echo $FRONTEND_PID > ../frontend.pid
 cd ..
 
-echo -e "${GREEN}[成功]${NC} 前端服务已启动，PID: $FRONTEND_PID"
+echo -e "${YELLOW}[提示]${NC} 等待前端服务启动（约20秒）..."
+sleep 20
+
+# 从日志中提取前端实际端口
+FRONTEND_PORT=$(grep -oP "Local:\s+http://localhost:\K\d+" logs/frontend.log 2>/dev/null | tail -1)
+if [ -z "$FRONTEND_PORT" ]; then
+    # 如果无法从日志提取，尝试从进程获取
+    FRONTEND_PORT=$(lsof -ti:80 2>/dev/null | head -1)
+    if [ -z "$FRONTEND_PORT" ]; then
+        FRONTEND_PORT="80"
+    fi
+fi
+
+# 检查前端是否启动成功
+if ps -p $FRONTEND_PID > /dev/null 2>&1; then
+    echo -e "${GREEN}[成功]${NC} 前端服务已启动，PID: $FRONTEND_PID"
+    if [ -n "$FRONTEND_PORT" ] && [ "$FRONTEND_PORT" != "80" ]; then
+        echo -e "${YELLOW}[提示]${NC} 前端服务运行在端口: $FRONTEND_PORT (80端口需要root权限)"
+    fi
+else
+    echo -e "${YELLOW}[警告]${NC} 前端服务可能未完全启动，请查看日志"
+    echo -e "${YELLOW}[提示]${NC} 查看日志: tail -f logs/frontend.log"
+fi
 echo ""
 
 echo "========================================"
@@ -138,7 +151,11 @@ echo "  启动完成！"
 echo "========================================"
 echo ""
 echo "后端服务地址: http://localhost:8081"
-echo "前端服务地址: http://localhost:80 (默认端口，请查看前端控制台)"
+if [ -n "$FRONTEND_PORT" ]; then
+    echo "前端服务地址: http://localhost:$FRONTEND_PORT"
+else
+    echo "前端服务地址: http://localhost:80 (请查看前端日志确认实际端口)"
+fi
 echo ""
 echo "提示: "
 echo "  - 后端PID: $BACKEND_PID (保存在 ruoyi-admin/backend.pid)"
