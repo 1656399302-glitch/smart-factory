@@ -47,7 +47,7 @@ export default {
 .wscn-http404 {
   position: relative;
   width: 1200px;
-  padding: 0 50px;
+  padding: 0 var(--spacing-2xl);
   overflow: hidden;
   .pic-404 {
     position: relative;
@@ -56,6 +56,7 @@ export default {
     overflow: hidden;
     &__parent {
       width: 100%;
+      transition: transform var(--transition-base);
     }
     &__child {
       position: absolute;
@@ -66,7 +67,7 @@ export default {
         opacity: 0;
         animation-name: cloudLeft;
         animation-duration: 2s;
-        animation-timing-function: linear;
+        animation-timing-function: var(--easing-standard);
         animation-fill-mode: forwards;
         animation-delay: 1s;
       }
@@ -77,7 +78,7 @@ export default {
         opacity: 0;
         animation-name: cloudMid;
         animation-duration: 2s;
-        animation-timing-function: linear;
+        animation-timing-function: var(--easing-standard);
         animation-fill-mode: forwards;
         animation-delay: 1.2s;
       }
@@ -88,7 +89,7 @@ export default {
         opacity: 0;
         animation-name: cloudRight;
         animation-duration: 2s;
-        animation-timing-function: linear;
+        animation-timing-function: var(--easing-standard);
         animation-fill-mode: forwards;
         animation-delay: 1s;
       }
@@ -164,40 +165,40 @@ export default {
     position: relative;
     float: left;
     width: 300px;
-    padding: 30px 0;
+    padding: var(--spacing-xl) 0;
     overflow: hidden;
     &__oops {
-      font-size: 32px;
-      font-weight: bold;
-      line-height: 40px;
-      color: #1482f0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      line-height: var(--line-height-tight);
+      color: var(--color-accent);
       opacity: 0;
-      margin-bottom: 20px;
+      margin-bottom: var(--spacing-md);
       animation-name: slideUp;
-      animation-duration: 0.5s;
+      animation-duration: var(--transition-base);
       animation-fill-mode: forwards;
     }
     &__headline {
-      font-size: 20px;
-      line-height: 24px;
-      color: #222;
-      font-weight: bold;
+      font-size: var(--font-size-xl);
+      line-height: var(--line-height-normal);
+      color: var(--color-text);
+      font-weight: var(--font-weight-bold);
       opacity: 0;
-      margin-bottom: 10px;
+      margin-bottom: var(--spacing-sm);
       animation-name: slideUp;
-      animation-duration: 0.5s;
-      animation-delay: 0.1s;
+      animation-duration: var(--transition-base);
+      animation-delay: 100ms;
       animation-fill-mode: forwards;
     }
     &__info {
-      font-size: 13px;
-      line-height: 21px;
-      color: grey;
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-relaxed);
+      color: var(--color-text-secondary);
       opacity: 0;
-      margin-bottom: 30px;
+      margin-bottom: var(--spacing-xl);
       animation-name: slideUp;
-      animation-duration: 0.5s;
-      animation-delay: 0.2s;
+      animation-duration: var(--transition-base);
+      animation-delay: 200ms;
       animation-fill-mode: forwards;
     }
     &__return-home {
@@ -205,18 +206,24 @@ export default {
       float: left;
       width: 110px;
       height: 36px;
-      background: #1482f0;
-      border-radius: 100px;
+      background: var(--color-accent);
+      border-radius: var(--radius-full);
       text-align: center;
-      color: #ffffff;
+      color: var(--color-white);
       opacity: 0;
-      font-size: 14px;
+      font-size: var(--font-size-sm);
       line-height: 36px;
       cursor: pointer;
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
       animation-name: slideUp;
-      animation-duration: 0.5s;
-      animation-delay: 0.3s;
+      animation-duration: var(--transition-base);
+      animation-delay: 300ms;
       animation-fill-mode: forwards;
+
+      &:hover {
+        background: var(--color-accent-hover);
+        transform: scale(1.03);
+      }
     }
     @keyframes slideUp {
       0% {
@@ -227,6 +234,27 @@ export default {
         transform: translateY(0);
         opacity: 1;
       }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .wscn-http404 {
+    width: 100%;
+    padding: 0 var(--spacing-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  .wscn-http404 {
+    .pic-404 {
+      width: 100%;
+      float: none;
+    }
+    .bullshit {
+      width: 100%;
+      float: none;
+      padding: var(--spacing-lg) 0;
     }
   }
 }

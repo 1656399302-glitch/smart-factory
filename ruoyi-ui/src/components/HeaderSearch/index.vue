@@ -181,13 +181,19 @@ export default {
 
   .search-icon {
     cursor: pointer;
-    font-size: 18px;
+    font-size: var(--font-size-lg);
     vertical-align: middle;
+    transition: transform var(--transition-fast), color var(--transition-fast);
+
+    &:hover {
+      transform: scale(1.1);
+      color: var(--color-accent);
+    }
   }
 
   .header-search-select {
-    font-size: 18px;
-    transition: width 0.2s;
+    font-size: var(--font-size-lg);
+    transition: width var(--transition-fast);
     width: 0;
     overflow: hidden;
     background: transparent;
@@ -201,15 +207,20 @@ export default {
       padding-left: 0;
       padding-right: 0;
       box-shadow: none !important;
-      border-bottom: 1px solid #d9d9d9;
+      border-bottom: 1px solid var(--color-border);
       vertical-align: middle;
+      transition: border-color var(--transition-fast);
+
+      &:focus {
+        border-bottom-color: var(--color-accent);
+      }
     }
   }
 
   &.show {
     .header-search-select {
       width: 210px;
-      margin-left: 10px;
+      margin-left: var(--spacing-sm);
     }
   }
 }

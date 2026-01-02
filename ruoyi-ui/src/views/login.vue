@@ -353,36 +353,46 @@ export default {
 }
 
 .title {
-  margin: 0px auto 30px auto;
+  margin: 0px auto var(--spacing-xl) auto;
   text-align: center;
-  color: #707070;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-base);
 }
 
 .login-form {
-  border-radius: 6px;
-  background: #ffffff;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
   width: 400px;
-  padding: 25px 25px 5px 25px;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-xs) var(--spacing-lg);
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
 
   .el-input {
     height: 38px;
 
     input {
       height: 38px;
+      transition: border-color var(--transition-fast);
     }
   }
 
   .input-icon {
     height: 39px;
     width: 14px;
-    margin-left: 2px;
+    margin-left: var(--spacing-xs);
+    transition: color var(--transition-fast);
   }
 }
 
 .login-tip {
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   text-align: center;
-  color: #bfbfbf;
+  color: var(--color-text-tertiary);
 }
 
 .login-code {
@@ -393,6 +403,12 @@ export default {
   img {
     cursor: pointer;
     vertical-align: middle;
+    border-radius: var(--radius-sm);
+    transition: opacity var(--transition-fast);
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
 
@@ -403,9 +419,9 @@ export default {
   bottom: 0;
   width: 100%;
   text-align: center;
-  color: #fff;
+  color: var(--color-white);
   font-family: Arial;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   letter-spacing: 1px;
 }
 
@@ -417,13 +433,23 @@ export default {
   width: 24px;
   height: 24px;
   vertical-align: middle;
-  margin-right: 12px;
+  margin-right: var(--spacing-sm);
+  transition: transform var(--transition-fast);
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 </style>
 
 <style scoped>
 .el-button.el-button--text {
-  color: #337ab7;
+  color: var(--color-accent);
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-accent-hover);
+  }
 }
 
 .selectApp /deep/ .el-form-item__content {

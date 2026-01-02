@@ -43,7 +43,6 @@ export default {
       });
     },
     refreshView() {
-      // In order to make the cached page re-rendered
       this.$store.dispatch("tagsView/delAllCachedViews", this.$route);
 
       const { fullPath } = this.$route;
@@ -57,3 +56,20 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.size-icon {
+  display: inline-block;
+  cursor: pointer;
+  fill: var(--color-text-secondary);
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  transition: transform var(--transition-fast), fill var(--transition-fast);
+
+  &:hover {
+    fill: var(--color-accent);
+    transform: scale(1.1);
+  }
+}
+</style>

@@ -1,0 +1,561 @@
+/* ============================================
+   基础配色 Tokens (Light Theme - 默认)
+   ============================================ */
+:root {
+  /* 主色 */
+  --color-primary: #1a1a1a;
+  --color-primary-light: #333333;
+  --color-primary-dark: #000000;
+  --color-white: #ffffff;
+
+  /* 强调色 */
+  --color-accent: #007aff;
+  --color-accent-hover: #0051d5;
+  --color-accent-light: #e6f2ff;
+
+  /* 渐变 */
+  --gradient-primary: linear-gradient(135deg, #8e44ad 0%, #3498db 100%);
+  --gradient-primary-hover: linear-gradient(135deg, #7d3c98 0%, #2980b9 100%);
+
+  /* 辅助色 */
+  --color-bg: #f5f5f7;
+  --color-bg-secondary: #ffffff;
+  --color-border: #d1d1d6;
+  --color-border-light: #e5e5ea;
+  --color-text: #1a1a1a;
+  --color-text-secondary: #6e6e73;
+  --color-text-tertiary: #86868b;
+
+  /* 状态色 */
+  --color-success: #34c759;
+  --color-warning: #ff9500;
+  --color-error: #ff3b30;
+  --color-info: #007aff;
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.16);
+
+  /* 圆角 */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* 间距 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  /* 字号 */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 32px;
+  --font-size-4xl: 40px;
+
+  /* 字重 */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* 行高 */
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* 动效 */
+  --easing-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-fast: 150ms var(--easing-standard);
+  --transition-base: 250ms var(--easing-standard);
+  --transition-slow: 350ms var(--easing-standard);
+
+  /* 毛玻璃 */
+  --backdrop-blur: blur(20px);
+  --backdrop-bg: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   Dark Theme
+   ============================================ */
+[data-theme="dark"],
+html.dark {
+  --color-primary: #ffffff;
+  --color-primary-light: #e5e5ea;
+  --color-primary-dark: #1a1a1a;
+  --color-white: #1a1a1a;
+
+  --color-accent: #0a84ff;
+  --color-accent-hover: #409cff;
+  --color-accent-light: #1a1a2e;
+
+  --gradient-primary: linear-gradient(135deg, #8e44ad 0%, #3498db 100%);
+  --gradient-primary-hover: linear-gradient(135deg, #a855c7 0%, #60a5fa 100%);
+
+  --color-bg: #000000;
+  --color-bg-secondary: #1a1a1a;
+  --color-border: #2c2c2e;
+  --color-border-light: #3a3a3c;
+  --color-text: #ffffff;
+  --color-text-secondary: #a1a1a6;
+  --color-text-tertiary: #6e6e73;
+
+  --color-success: #30d158;
+  --color-warning: #ff9f0a;
+  --color-error: #ff453a;
+  --color-info: #0a84ff;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.6);
+
+  --backdrop-bg: rgba(26, 26, 26, 0.8);
+}
+
+/* ============================================
+   工具类 - 容器与布局
+   ============================================ */
+
+/* 容器 */
+.u-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .u-container {
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+  }
+}
+
+/* 12列网格系统 */
+.u-grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 767px) {
+  .u-grid-12 {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+}
+
+/* 网格列 */
+.u-col-1 {
+  grid-column: span 1;
+}
+
+.u-col-2 {
+  grid-column: span 2;
+}
+
+.u-col-3 {
+  grid-column: span 3;
+}
+
+.u-col-4 {
+  grid-column: span 4;
+}
+
+.u-col-5 {
+  grid-column: span 5;
+}
+
+.u-col-6 {
+  grid-column: span 6;
+}
+
+.u-col-7 {
+  grid-column: span 7;
+}
+
+.u-col-8 {
+  grid-column: span 8;
+}
+
+.u-col-9 {
+  grid-column: span 9;
+}
+
+.u-col-10 {
+  grid-column: span 10;
+}
+
+.u-col-11 {
+  grid-column: span 11;
+}
+
+.u-col-12 {
+  grid-column: span 12;
+}
+
+@media (max-width: 767px) {
+
+  .u-col-1,
+  .u-col-2,
+  .u-col-3,
+  .u-col-4,
+  .u-col-5,
+  .u-col-6,
+  .u-col-7,
+  .u-col-8,
+  .u-col-9,
+  .u-col-10,
+  .u-col-11,
+  .u-col-12 {
+    grid-column: span 12;
+  }
+}
+
+/* ============================================
+   工具类 - 卡片
+   ============================================ */
+
+.u-card {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-lg);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), opacity var(--transition-base);
+  will-change: transform;
+}
+
+.u-card-hover {
+  cursor: pointer;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), opacity var(--transition-base);
+  will-change: transform;
+}
+
+.u-card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ============================================
+   工具类 - 按钮
+   ============================================ */
+
+.u-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  border: none;
+  cursor: pointer;
+  transition: transform var(--transition-fast), opacity var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+  text-decoration: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.u-btn:hover {
+  transform: scale(1.03);
+}
+
+.u-btn:active {
+  transform: scale(0.98);
+}
+
+.u-btn-primary {
+  background: var(--gradient-primary);
+  color: var(--color-white);
+}
+
+.u-btn-primary:hover {
+  background: var(--gradient-primary-hover);
+  color: var(--color-white);
+}
+
+.u-btn-secondary {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.u-btn-secondary:hover {
+  background: var(--color-border-light);
+  color: var(--color-text);
+}
+
+.u-btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.u-btn-outline:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ============================================
+   工具类 - Reveal 动画
+   ============================================ */
+
+.u-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+  will-change: opacity, transform;
+}
+
+.u-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reveal 延迟 */
+.u-reveal-delay-1 {
+  transition-delay: 50ms;
+}
+
+.u-reveal-delay-2 {
+  transition-delay: 100ms;
+}
+
+.u-reveal-delay-3 {
+  transition-delay: 150ms;
+}
+
+.u-reveal-delay-4 {
+  transition-delay: 200ms;
+}
+
+.u-reveal-delay-5 {
+  transition-delay: 250ms;
+}
+
+/* ============================================
+   工具类 - 图片 Hover 效果
+   ============================================ */
+
+.u-img-hover {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  transition: transform var(--transition-base), opacity var(--transition-base);
+  will-change: transform;
+}
+
+.u-img-hover:hover {
+  transform: scale(1.05);
+  opacity: 0.95;
+}
+
+.u-img-hover img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform var(--transition-base), opacity var(--transition-base);
+  will-change: transform;
+}
+
+.u-img-hover:hover img {
+  transform: scale(1.1);
+}
+
+/* 放大镜图标 */
+.u-magnifier {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: transform var(--transition-base), opacity var(--transition-base);
+  pointer-events: none;
+}
+
+.u-img-hover:hover .u-magnifier {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.u-magnifier::before {
+  content: '🔍';
+  font-size: 20px;
+}
+
+/* ============================================
+   工具类 - 毛玻璃导航
+   ============================================ */
+
+.u-glass-nav {
+  background: var(--backdrop-bg);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+/* ============================================
+   工具类 - 平滑锚点滚动
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   工具类 - 加载占位
+   ============================================ */
+
+.u-skeleton {
+  background: linear-gradient(90deg,
+      var(--color-bg) 0%,
+      var(--color-border-light) 50%,
+      var(--color-bg) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ============================================
+   工具类 - 图片懒加载占位
+   ============================================ */
+
+.u-lazy-img {
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  border-radius: var(--radius-md);
+}
+
+.u-lazy-img img {
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.u-lazy-img img.loaded {
+  opacity: 1;
+}
+
+/* ============================================
+   工具类 - 文本工具
+   ============================================ */
+
+.u-text-gradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   工具类 - 间距工具
+   ============================================ */
+
+.u-mt-xs {
+  margin-top: var(--spacing-xs);
+}
+
+.u-mt-sm {
+  margin-top: var(--spacing-sm);
+}
+
+.u-mt-md {
+  margin-top: var(--spacing-md);
+}
+
+.u-mt-lg {
+  margin-top: var(--spacing-lg);
+}
+
+.u-mt-xl {
+  margin-top: var(--spacing-xl);
+}
+
+.u-mb-xs {
+  margin-bottom: var(--spacing-xs);
+}
+
+.u-mb-sm {
+  margin-bottom: var(--spacing-sm);
+}
+
+.u-mb-md {
+  margin-bottom: var(--spacing-md);
+}
+
+.u-mb-lg {
+  margin-bottom: var(--spacing-lg);
+}
+
+.u-mb-xl {
+  margin-bottom: var(--spacing-xl);
+}
+
+.u-p-xs {
+  padding: var(--spacing-xs);
+}
+
+.u-p-sm {
+  padding: var(--spacing-sm);
+}
+
+.u-p-md {
+  padding: var(--spacing-md);
+}
+
+.u-p-lg {
+  padding: var(--spacing-lg);
+}
+
+.u-p-xl {
+  padding: var(--spacing-xl);
+}

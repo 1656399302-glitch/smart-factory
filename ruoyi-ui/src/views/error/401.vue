@@ -51,37 +51,82 @@ export default {
   .errPage-container {
     width: 800px;
     max-width: 100%;
-    margin: 100px auto;
+    margin: var(--spacing-3xl) auto;
     .pan-back-btn {
-      background: #008489;
-      color: #fff;
+      background: var(--color-accent);
+      color: var(--color-white);
       border: none!important;
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
+
+      &:hover {
+        background: var(--color-accent-hover);
+        transform: scale(1.03);
+      }
     }
     .pan-gif {
       margin: 0 auto;
       display: block;
+      transition: transform var(--transition-base);
+
+      &:hover {
+        transform: scale(1.05);
+      }
     }
     .pan-img {
       display: block;
       margin: 0 auto;
       width: 100%;
+      transition: transform var(--transition-base);
+
+      &:hover {
+        transform: scale(1.02);
+      }
     }
     .text-jumbo {
-      font-size: 60px;
-      font-weight: 700;
-      color: #484848;
+      font-size: var(--font-size-4xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text);
+      transition: color var(--transition-base);
     }
     .list-unstyled {
-      font-size: 14px;
+      font-size: var(--font-size-sm);
       li {
-        padding-bottom: 5px;
+        padding-bottom: var(--spacing-xs);
       }
       a {
-        color: #008489;
+        color: var(--color-accent);
         text-decoration: none;
+        transition: color var(--transition-fast);
+
         &:hover {
+          color: var(--color-accent-hover);
           text-decoration: underline;
         }
+      }
+    }
+  }
+
+  @media (max-width: 992px) {
+    .errPage-container {
+      width: 100%;
+      padding: 0 var(--spacing-lg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .errPage-container {
+      margin: var(--spacing-xl) auto;
+      .text-jumbo {
+        font-size: var(--font-size-3xl);
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    .errPage-container {
+      margin: var(--spacing-lg) auto;
+      .text-jumbo {
+        font-size: var(--font-size-2xl);
       }
     }
   }

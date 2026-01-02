@@ -99,12 +99,23 @@ export default {
 <style lang="scss" scoped>
 .app-breadcrumb.el-breadcrumb {
   display: inline-block;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   line-height: 50px;
-  margin-left: 8px;
+  margin-left: var(--spacing-sm);
+  transition: color var(--transition-base);
+
   .no-redirect {
-    color: #97a8be;
+    color: var(--color-text-tertiary);
     cursor: text;
+    transition: color var(--transition-base);
+  }
+
+  ::v-deep .el-breadcrumb__inner {
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--color-accent);
+    }
   }
 }
 </style>

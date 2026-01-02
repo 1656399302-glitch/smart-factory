@@ -79,7 +79,7 @@ export default {
 
 <style lang="scss" scoped>
 .sidebarLogoFade-enter-active {
-  transition: opacity 1.5s;
+  transition: opacity var(--transition-slow);
 }
 
 .sidebarLogoFade-enter,
@@ -92,30 +92,42 @@ export default {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  background: #2b2f3a;
+  background: var(--color-primary-dark);
   text-align: center;
   overflow: hidden;
+  transition: background-color var(--transition-base);
 
   & .sidebar-logo-link {
     height: 100%;
     width: 100%;
+    transition: transform var(--transition-fast);
+
+    &:hover {
+      transform: scale(1.02);
+    }
 
     & .sidebar-logo {
       width: 24px;
       height: 24px;
       vertical-align: middle;
-      margin-right: 12px;
+      margin-right: var(--spacing-sm);
+      transition: transform var(--transition-fast);
+
+      &:hover {
+        transform: scale(1.1) rotate(5deg);
+      }
     }
 
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: #fff;
-      font-weight: 600;
+      color: var(--color-white);
+      font-weight: var(--font-weight-semibold);
       line-height: 50px;
-      font-size: 14px;
+      font-size: var(--font-size-sm);
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
+      transition: color var(--transition-base);
     }
   }
 

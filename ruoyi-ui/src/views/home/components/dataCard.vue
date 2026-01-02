@@ -1,6 +1,6 @@
 <template>
-  <div class="data-card">
-    <div v-for="(item, index) in cardData" :key="index" class="data-card-item">
+  <div class="data-card u-grid-12">
+    <div v-for="(item, index) in cardData" :key="index" class="data-card-item u-card u-card-hover u-col-12" v-reveal>
       <div class="data-card__title">{{ item.title }}</div>
       <div class="data-card__content">
         <svg-icon :icon-class="item.icon" class="data-card__icon" />
@@ -67,61 +67,66 @@ export default {
 
 <style scoped>
 .data-card {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px;
-}
-
-@media (max-width: 768px) {
-  .data-card {
-    grid-template-columns: 1fr;
-  }
+  gap: var(--spacing-md);
 }
 
 .data-card-item {
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  background: linear-gradient(
-    135deg,
-    var(--card-color),
-    var(--card-color-dark)
-  );
-  transition: transform 0.3s ease;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  background: var(--gradient-primary);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  box-shadow: var(--shadow-md);
 }
-
-.data-card-item:nth-child(1) {
-  --card-color: #ff7a7a;
-  --card-color-dark: #ff9f9f;
-}
-
 
 .data-card-item:hover {
-  transform: scale(1.02);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
 }
 
 .data-card__content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 16px;
+  margin-top: var(--spacing-md);
 }
 
 .data-card__icon {
   width: 30px;
   height: 30px;
-  color: #fff;
+  color: var(--color-white);
 }
 
 .data-card__title {
-  font-size: 16px;
-  font-weight: 500;
-  color: #fff;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-white);
 }
 
 .data-card__value {
-  font-size: 26px;
-  font-weight: bold;
-  color: #fff;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+}
+
+@media (max-width: 576px) {
+  .data-card-item {
+    padding: var(--spacing-md);
+  }
+
+  .data-card__value {
+    font-size: var(--font-size-xl);
+  }
+}
+
+@media (min-width: 577px) and (max-width: 767px) {
+  .data-card-item {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (min-width: 768px) {
+  .data-card-item {
+    padding: var(--spacing-lg);
+  }
 }
 </style>

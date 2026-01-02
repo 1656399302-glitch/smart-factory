@@ -193,29 +193,41 @@ export default {
 <style lang="scss" scoped>
   .setting-drawer-content {
     .setting-drawer-title {
-      margin-bottom: 12px;
-      color: rgba(0, 0, 0, .85);
-      font-size: 14px;
-      line-height: 22px;
-      font-weight: bold;
+      margin-bottom: var(--spacing-sm);
+      color: var(--color-text);
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-normal);
+      font-weight: var(--font-weight-bold);
+      transition: color var(--transition-base);
     }
 
     .setting-drawer-block-checbox {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      margin-top: 10px;
-      margin-bottom: 20px;
+      margin-top: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
 
       .setting-drawer-block-checbox-item {
         position: relative;
-        margin-right: 16px;
-        border-radius: 2px;
+        margin-right: var(--spacing-md);
+        border-radius: var(--radius-sm);
         cursor: pointer;
+        transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+
+        &:hover {
+          transform: scale(1.05);
+          box-shadow: var(--shadow-md);
+        }
 
         img {
           width: 48px;
           height: 48px;
+          transition: transform var(--transition-fast);
+
+          &:hover {
+            transform: scale(1.05);
+          }
         }
 
         .setting-drawer-block-checbox-selectIcon {
@@ -224,37 +236,45 @@ export default {
           right: 0;
           width: 100%;
           height: 100%;
-          padding-top: 15px;
-          padding-left: 24px;
-          color: #1890ff;
-          font-weight: 700;
-          font-size: 14px;
+          padding-top: var(--spacing-md);
+          padding-left: var(--spacing-lg);
+          color: var(--color-accent);
+          font-weight: var(--font-weight-bold);
+          font-size: var(--font-size-sm);
+          transition: color var(--transition-fast);
         }
       }
     }
   }
 
   .drawer-container {
-    padding: 20px;
-    font-size: 14px;
-    line-height: 1.5;
+    padding: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
     word-wrap: break-word;
 
     .drawer-title {
-      margin-bottom: 12px;
-      color: rgba(0, 0, 0, .85);
-      font-size: 14px;
-      line-height: 22px;
+      margin-bottom: var(--spacing-sm);
+      color: var(--color-text);
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-normal);
+      transition: color var(--transition-base);
     }
 
     .drawer-item {
-      color: rgba(0, 0, 0, .65);
-      font-size: 14px;
-      padding: 12px 0;
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-sm);
+      padding: var(--spacing-sm) 0;
+      transition: color var(--transition-base);
     }
 
     .drawer-switch {
-      float: right
+      float: right;
+      transition: transform var(--transition-fast);
+
+      &:hover {
+        transform: scale(1.05);
+      }
     }
   }
 </style>

@@ -212,7 +212,14 @@ export default {
 .theme-picker .el-color-picker__trigger {
   height: 26px !important;
   width: 26px !important;
-  padding: 2px;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+  }
 }
 
 .theme-picker-dropdown .el-color-dropdown__link-btn {

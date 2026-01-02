@@ -79,30 +79,38 @@ export default {
   li {
     list-style-type: none;
     text-align: center;
-    font-size: 14px;
+    font-size: var(--font-size-sm);
     display: inline-block;
     width: 16.66%;
     box-sizing: border-box;
     height: 108px;
-    padding: 15px 6px 6px 6px;
+    padding: var(--spacing-md) var(--spacing-xs) var(--spacing-xs) var(--spacing-xs);
     cursor: pointer;
     overflow: hidden;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
     &:hover {
-      background: #f2f2f2;
+      background: var(--color-bg);
+      transform: scale(1.05);
     }
     &.active-item{
-      background: #e1f3fb;
-      color: #7a6df0
+      background: var(--color-accent-light);
+      color: var(--color-accent);
     }
     > i {
-      font-size: 30px;
+      font-size: var(--font-size-3xl);
       line-height: 50px;
+      transition: transform var(--transition-fast);
+    }
+
+    &:hover > i {
+      transform: scale(1.1);
     }
   }
 }
 .icon-dialog {
   ::v-deep .el-dialog {
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     margin-bottom: 0;
     margin-top: 4vh !important;
     display: flex;
@@ -110,11 +118,12 @@ export default {
     max-height: 92vh;
     overflow: hidden;
     box-sizing: border-box;
+    box-shadow: var(--shadow-lg);
     .el-dialog__header {
-      padding-top: 14px;
+      padding-top: var(--spacing-sm);
     }
     .el-dialog__body {
-      margin: 0 20px 20px 20px;
+      margin: 0 var(--spacing-md) var(--spacing-md) var(--spacing-md);
       padding: 0;
       overflow: auto;
     }

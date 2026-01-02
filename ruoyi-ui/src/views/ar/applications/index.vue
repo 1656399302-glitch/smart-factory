@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container u-container">
     <el-form
       :model="queryParams"
       @submit.native.prevent
@@ -8,6 +8,8 @@
       :inline="true"
       v-show="showSearch"
       label-width="68px"
+      class="u-card u-mb-md"
+      v-reveal
     >
       <el-form-item label="名称" prop="Name">
         <el-input
@@ -49,7 +51,7 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
+    <el-row :gutter="10" class="mb8 u-mb-md" v-reveal>
       <el-col :span="1.5">
         <el-button
           type="primary"
@@ -58,6 +60,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['ar:applications:add']"
+          class="u-btn u-btn-primary"
           >新增</el-button
         >
       </el-col>
@@ -70,6 +73,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['ar:applications:edit']"
+          class="u-btn"
           >修改</el-button
         >
       </el-col>
@@ -82,6 +86,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['ar:applications:remove']"
+          class="u-btn"
           >删除</el-button
         >
       </el-col>
@@ -93,6 +98,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['ar:applications:export']"
+          class="u-btn"
           >导出</el-button
         >
       </el-col>
@@ -106,6 +112,8 @@
       v-loading="loading"
       :data="applicationsList"
       @selection-change="handleSelectionChange"
+      class="u-card"
+      v-reveal
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="应用ID" align="center" prop="ApplicationID" />

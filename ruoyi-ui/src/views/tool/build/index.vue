@@ -372,40 +372,42 @@ export default {
 
 <style lang='scss'>
 .editor-tabs{
-  background: #121315;
+  background: var(--color-primary-dark);
   .el-tabs__header{
     margin: 0;
-    border-bottom-color: #121315;
-    .el-tabs__nav{
-      border-color: #121315;
-    }
+    border-bottom-color: var(--color-primary-dark);
+  }
+  .el-tabs__nav{
+    border-color: var(--color-primary-dark);
   }
   .el-tabs__item{
     height: 32px;
     line-height: 32px;
-    color: #888a8e;
-    border-left: 1px solid #121315 !important;
-    background: #363636;
-    margin-right: 5px;
+    color: var(--color-text-tertiary);
+    border-left: 1px solid var(--color-primary-dark) !important;
+    background: var(--color-primary-light);
+    margin-right: var(--spacing-xs);
     user-select: none;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
   }
   .el-tabs__item.is-active{
-    background: #1e1e1e;
-    border-bottom-color: #1e1e1e!important;
-    color: #fff;
+    background: var(--color-primary);
+    border-bottom-color: var(--color-primary)!important;
+    color: var(--color-white);
   }
   .el-icon-edit{
-    color: #f1fa8c;
+    color: var(--color-warning);
+    transition: color var(--transition-fast);
   }
   .el-icon-document{
-    color: #a95812;
+    color: var(--color-warning);
+    transition: color var(--transition-fast);
   }
 }
 
-// home
 .right-scrollbar {
   .el-scrollbar__view {
-    padding: 12px 18px 15px 15px;
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md) var(--spacing-md);
   }
 }
 .left-scrollbar .el-scrollbar__wrap {
@@ -420,16 +422,22 @@ export default {
   .el-tabs__item{
     width: 50%;
     text-align: center;
+    transition: color var(--transition-fast);
   }
   .el-tabs__nav{
     width: 100%;
   }
 }
 .reg-item{
-  padding: 12px 6px;
-  background: #f8f8f8;
+  padding: var(--spacing-sm) var(--spacing-xs);
+  background: var(--color-bg);
   position: relative;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  &:hover {
+    transform: translateY(-2px);
+    background: var(--color-accent-light);
+  }
   .close-btn{
     position: absolute;
     right: -6px;
@@ -439,46 +447,61 @@ export default {
     height: 16px;
     line-height: 16px;
     background: rgba(0, 0, 0, 0.2);
-    border-radius: 50%;
-    color: #fff;
+    border-radius: var(--radius-full);
+    color: var(--color-white);
     text-align: center;
     z-index: 1;
     cursor: pointer;
-    font-size: 12px;
+    font-size: var(--font-size-xs);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
     &:hover{
-      background: rgba(210, 23, 23, 0.5)
+      background: var(--color-error);
+      transform: scale(1.2);
     }
   }
   & + .reg-item{
-    margin-top: 18px;
+    margin-top: var(--spacing-md);
   }
 }
 .action-bar{
   & .el-button+.el-button {
-    margin-left: 15px;
+    margin-left: var(--spacing-md);
   }
   & i {
-    font-size: 20px;
+    font-size: var(--font-size-xl);
     vertical-align: middle;
     position: relative;
     top: -1px;
+    transition: transform var(--transition-fast);
+  }
+
+  & .el-button:hover i {
+    transform: scale(1.1);
   }
 }
 
 .custom-tree-node{
   width: 100%;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   .node-operation{
     float: right;
   }
   i[class*="el-icon"] + i[class*="el-icon"]{
-    margin-left: 6px;
+    margin-left: var(--spacing-xs);
   }
   .el-icon-plus{
-    color: #409EFF;
+    color: var(--color-accent);
+    transition: color var(--transition-fast), transform var(--transition-fast);
+    &:hover {
+      transform: scale(1.1);
+    }
   }
   .el-icon-delete{
-    color: #157a0c;
+    color: var(--color-success);
+    transition: color var(--transition-fast), transform var(--transition-fast);
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }
 
@@ -489,13 +512,16 @@ export default {
 .el-rate{
   display: inline-block;
   vertical-align: text-top;
+  transition: transform var(--transition-fast);
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 .el-upload__tip{
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
 }
-
-$selectedColor: #f6f7ff;
-$lighterBlue: #409EFF;
 
 .container {
   position: relative;
@@ -504,45 +530,50 @@ $lighterBlue: #409EFF;
 }
 
 .components-list {
-  padding: 8px;
+  padding: var(--spacing-sm);
   box-sizing: border-box;
   height: 100%;
   .components-item {
     display: inline-block;
     width: 48%;
     margin: 1%;
-    transition: transform 0ms !important;
+    transition: transform var(--transition-fast) !important;
   }
 }
 .components-draggable{
-  padding-bottom: 20px;
+  padding-bottom: var(--spacing-md);
 }
 .components-title{
-  font-size: 14px;
-  color: #222;
-  margin: 6px 2px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  margin: var(--spacing-xs) var(--spacing-xs);
+  transition: color var(--transition-base);
   .svg-icon{
-    color: #666;
-    font-size: 18px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-lg);
+    transition: color var(--transition-fast);
   }
 }
 
 .components-body {
-  padding: 8px 10px;
-  background: $selectedColor;
-  font-size: 12px;
+  padding: var(--spacing-sm) var(--spacing-sm);
+  background: var(--color-accent-light);
+  font-size: var(--font-size-xs);
   cursor: move;
-  border: 1px dashed $selectedColor;
-  border-radius: 3px;
+  border: 1px dashed var(--color-accent-light);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
   .svg-icon{
-    color: #777;
-    font-size: 15px;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-base);
+    transition: color var(--transition-fast);
   }
   &:hover {
-    border: 1px dashed #787be8;
-    color: #787be8;
+    border: 1px dashed var(--color-accent);
+    color: var(--color-accent);
+    transform: translateY(-2px);
     .svg-icon {
-      color: #787be8;
+      color: var(--color-accent);
     }
   }
 }
@@ -561,8 +592,8 @@ $lighterBlue: #409EFF;
 .center-scrollbar {
   height: calc(100vh - 42px);
   overflow: hidden;
-  border-left: 1px solid #f1e8e8;
-  border-right: 1px solid #f1e8e8;
+  border-left: 1px solid var(--color-border-light);
+  border-right: 1px solid var(--color-border-light);
   box-sizing: border-box;
 }
 .center-board {
@@ -577,59 +608,75 @@ $lighterBlue: #409EFF;
   left: 0;
   right: 0;
   text-align: center;
-  font-size: 18px;
-  color: #ccb1ea;
-  letter-spacing: 4px;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  letter-spacing: var(--spacing-xs);
+  transition: color var(--transition-base);
 }
 .action-bar{
   position: relative;
   height: 42px;
   text-align: right;
-  padding: 0 15px;
-  box-sizing: border-box;;
-  border: 1px solid #f1e8e8;
+  padding: 0 var(--spacing-md);
+  box-sizing: border-box;
+  border: 1px solid var(--color-border-light);
   border-top: none;
   border-left: none;
   .delete-btn{
-    color: #F56C6C;
+    color: var(--color-error);
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--color-error);
+    }
   }
 }
 .logo-wrapper{
   position: relative;
   height: 42px;
-  background: #fff;
-  border-bottom: 1px solid #f1e8e8;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border-light);
   box-sizing: border-box;
 }
 .logo{
   position: absolute;
-  left: 12px;
-  top: 6px;
+  left: var(--spacing-sm);
+  top: var(--spacing-xs);
   line-height: 30px;
-  color: #00afff;
-  font-weight: 600;
-  font-size: 17px;
+  color: var(--color-accent);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-lg);
   white-space: nowrap;
+  transition: color var(--transition-base);
   > img{
     width: 30px;
     height: 30px;
     vertical-align: top;
+    transition: transform var(--transition-fast);
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
   .github{
     display: inline-block;
     vertical-align: sub;
-    margin-left: 15px;
+    margin-left: var(--spacing-md);
     > img{
       height: 22px;
+      transition: transform var(--transition-fast);
+
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
 }
 
 .center-board-row {
-  padding: 12px 12px 15px 12px;
+  padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-md) var(--spacing-sm);
   box-sizing: border-box;
   & > .el-form {
-    // 69 = 12+15+42
     height: calc(100vh - 69px);
   }
 }
@@ -652,54 +699,57 @@ $lighterBlue: #409EFF;
       right: 0;
       top: 0;
       height: 3px;
-      background: rgb(89, 89, 223);
+      background: var(--color-accent);
       z-index: 2;
     }
   }
   .components-item.sortable-ghost {
     width: 100%;
     height: 60px;
-    background-color: $selectedColor;
+    background-color: var(--color-accent-light);
   }
   .active-from-item {
     & > .el-form-item{
-      background: $selectedColor;
-      border-radius: 6px;
+      background: var(--color-accent-light);
+      border-radius: var(--radius-md);
     }
     & > .drawing-item-copy, & > .drawing-item-delete{
       display: initial;
     }
     & > .component-name{
-      color: $lighterBlue;
+      color: var(--color-accent);
     }
   }
   .el-form-item{
-    margin-bottom: 15px;
+    margin-bottom: var(--spacing-md);
   }
 }
 .drawing-item{
   position: relative;
   cursor: move;
+  transition: transform var(--transition-fast);
   &.unfocus-bordered:not(.activeFromItem) > div:first-child  {
-    border: 1px dashed #ccc;
+    border: 1px dashed var(--color-border);
   }
   .el-form-item{
-    padding: 12px 10px;
+    padding: var(--spacing-sm) var(--spacing-sm);
+    transition: background-color var(--transition-fast), border-radius var(--transition-fast);
   }
 }
 .drawing-row-item{
   position: relative;
   cursor: move;
   box-sizing: border-box;
-  border: 1px dashed #ccc;
-  border-radius: 3px;
-  padding: 0 2px;
-  margin-bottom: 15px;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+  transition: border-color var(--transition-fast);
   .drawing-row-item {
-    margin-bottom: 2px;
+    margin-bottom: var(--spacing-xs);
   }
   .el-col{
-    margin-top: 22px;
+    margin-top: var(--spacing-md);
   }
   .el-form-item{
     margin-bottom: 0;
@@ -708,23 +758,24 @@ $lighterBlue: #409EFF;
     min-height: 80px;
   }
   &.active-from-item{
-    border: 1px dashed $lighterBlue;
+    border: 1px dashed var(--color-accent);
   }
   .component-name{
     position: absolute;
     top: 0;
     left: 0;
-    font-size: 12px;
-    color: #bbb;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
     display: inline-block;
-    padding: 0 6px;
+    padding: 0 var(--spacing-xs);
+    transition: color var(--transition-fast);
   }
 }
 .drawing-item, .drawing-row-item{
   &:hover {
     & > .el-form-item{
-      background: $selectedColor;
-      border-radius: 6px;
+      background: var(--color-accent-light);
+      border-radius: var(--radius-md);
     }
     & > .drawing-item-copy, & > .drawing-item-delete{
       display: initial;
@@ -738,30 +789,33 @@ $lighterBlue: #409EFF;
     height: 22px;
     line-height: 22px;
     text-align: center;
-    border-radius: 50%;
-    font-size: 12px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
     border: 1px solid;
     cursor: pointer;
     z-index: 1;
+    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
   }
   & > .drawing-item-copy{
     right: 56px;
-    border-color: $lighterBlue;
-    color: $lighterBlue;
-    background: #fff;
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-bg-secondary);
     &:hover{
-      background: $lighterBlue;
-      color: #fff;
+      background: var(--color-accent);
+      color: var(--color-white);
+      transform: scale(1.1);
     }
   }
   & > .drawing-item-delete{
     right: 24px;
-    border-color: #F56C6C;
-    color: #F56C6C;
-    background: #fff;
+    border-color: var(--color-error);
+    color: var(--color-error);
+    background: var(--color-bg-secondary);
     &:hover{
-      background: #F56C6C;
-      color: #fff;
+      background: var(--color-error);
+      color: var(--color-white);
+      transform: scale(1.1);
     }
   }
 }

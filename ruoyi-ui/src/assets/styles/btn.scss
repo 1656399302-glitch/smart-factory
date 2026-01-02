@@ -42,23 +42,24 @@
 }
 
 .pan-btn {
-  font-size: 14px;
-  color: #fff;
-  padding: 14px 36px;
-  border-radius: 8px;
+  font-size: var(--font-size-sm);
+  color: var(--color-white);
+  padding: var(--spacing-sm) var(--spacing-xl);
+  border-radius: var(--radius-md);
   border: none;
   outline: none;
-  transition: 600ms ease all;
+  transition: var(--transition-base);
   position: relative;
   display: inline-block;
 
   &:hover {
-    background: #fff;
+    background: var(--color-white);
+    transform: scale(1.03);
 
     &:before,
     &:after {
       width: 100%;
-      transition: 600ms ease all;
+      transition: var(--transition-base);
     }
   }
 
@@ -70,7 +71,7 @@
     right: 0;
     height: 2px;
     width: 0;
-    transition: 400ms ease all;
+    transition: var(--transition-fast);
   }
 
   &::after {
@@ -83,17 +84,22 @@
 
 .custom-button {
   display: inline-block;
-  line-height: 1;
+  line-height: var(--line-height-normal);
   white-space: nowrap;
   cursor: pointer;
-  background: #fff;
-  color: #fff;
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
   -webkit-appearance: none;
   text-align: center;
   box-sizing: border-box;
   outline: 0;
   margin: 0;
-  padding: 10px 15px;
-  font-size: 14px;
-  border-radius: 4px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+
+  &:hover {
+    transform: scale(1.03);
+  }
 }

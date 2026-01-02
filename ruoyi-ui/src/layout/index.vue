@@ -79,13 +79,14 @@ export default {
   }
 
   .drawer-bg {
-    background: #000;
+    background: var(--color-primary);
     opacity: 0.3;
     width: 100%;
     top: 0;
     height: 100%;
     position: absolute;
     z-index: 999;
+    transition: opacity var(--transition-base);
   }
 
   .fixed-header {
@@ -94,7 +95,7 @@ export default {
     right: 0;
     z-index: 9;
     width: calc(100% - #{$base-sidebar-width});
-    transition: width 0.28s;
+    transition: width var(--transition-base);
   }
 
   .hideSidebar .fixed-header {

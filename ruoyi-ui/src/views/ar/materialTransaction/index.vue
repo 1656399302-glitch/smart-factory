@@ -599,18 +599,20 @@ export default {
 <style scoped>
 .error-msg {
   position: absolute;
-  bottom: 4px;
-  color: #f56c6c;
-  line-height: 1;
-  font-size: 6px;
+  bottom: var(--spacing-xs);
+  color: var(--color-error);
+  line-height: var(--line-height-tight);
+  font-size: var(--font-size-xs);
+  transition: color var(--transition-fast);
 }
 .transactionDetailTable ::v-deep .el-table__cell {
-  padding: 20px 0;
+  padding: var(--spacing-md) 0;
+  transition: padding var(--transition-base);
 }
 
-/* 选择 .error-msg 前面同一层级的 .el-input__inner */
 ::v-deep .error-msg ~ .el-select .el-input .el-input__inner,
 ::v-deep .error-msg ~ .el-input .el-input__inner {
-  border-color: #f56c6c;
+  border-color: var(--color-error);
+  transition: border-color var(--transition-fast);
 }
 </style>

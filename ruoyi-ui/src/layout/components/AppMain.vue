@@ -81,11 +81,17 @@ export default {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+  background-color: var(--color-bg);
+  transition: background-color var(--transition-base);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #c0c0c0;
-  border-radius: 3px;
+  background-color: var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+
+  &:hover {
+    background-color: var(--color-text-tertiary);
+  }
 }
 </style>

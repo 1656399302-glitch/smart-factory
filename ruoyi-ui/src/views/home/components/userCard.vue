@@ -1,7 +1,10 @@
 <template>
   <div class="user-card">
-    <div class="user-avatar"><img :src="avatar" alt="userAvatar" /></div>
-    <div class="user-info">
+    <div class="user-avatar u-img-hover">
+      <img :src="avatar" alt="userAvatar" />
+      <div class="u-magnifier"></div>
+    </div>
+    <div class="user-info" v-reveal>
       <div class="greeting">{{ timeSlot }}好，{{ user.nickName }}，欢迎来到{{ title }}！</div>
       <div class="slogan">有你创新，创新由你</div>
     </div>
@@ -42,19 +45,22 @@ export default {
 .user-card {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: var(--spacing-xl);
   flex: 1;
 }
 
 .user-avatar {
   display: flex;
   justify-content: center;
+  border-radius: var(--radius-full);
+  overflow: hidden;
 }
 
 .user-avatar img {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
+  transition: transform var(--transition-base);
 }
 
 .user-info {
@@ -62,23 +68,52 @@ export default {
   min-height: 80px;
   flex-direction: column;
   justify-content: center;
-  gap: 16px;
+  gap: var(--spacing-md);
 }
 
 .greeting {
-  font-size: 20px;
-  color: #333;
-  font-weight: bold;
+  font-size: var(--font-size-xl);
+  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
 }
 
 .slogan {
-  font-size: 16px;
-  color: #666;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 576px) {
+  .user-card {
+    gap: var(--spacing-md);
+  }
+
+  .user-avatar img {
+    width: 60px;
+    height: 60px;
+  }
+
   .greeting {
-    font-size: 16px;
+    font-size: var(--font-size-base);
+  }
+
+  .slogan {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (min-width: 577px) and (max-width: 767px) {
+  .user-card {
+    gap: var(--spacing-lg);
+  }
+
+  .greeting {
+    font-size: var(--font-size-lg);
+  }
+}
+
+@media (min-width: 768px) {
+  .user-card {
+    gap: var(--spacing-xl);
   }
 }
 </style>

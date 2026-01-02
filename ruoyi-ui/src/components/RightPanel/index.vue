@@ -66,8 +66,8 @@ export default {
   top: 0;
   left: 0;
   opacity: 0;
-  transition: opacity .3s cubic-bezier(.7, .3, .1, 1);
-  background: rgba(0, 0, 0, .2);
+  transition: opacity var(--transition-base);
+  background: rgba(0, 0, 0, 0.2);
   z-index: -1;
 }
 
@@ -78,10 +78,10 @@ export default {
   position: fixed;
   top: 0;
   right: 0;
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .05);
-  transition: all .25s cubic-bezier(.7, .3, .1, 1);
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
   transform: translate(100%);
-  background: #fff;
+  background: var(--color-bg-secondary);
   z-index: 40000;
 }
 
@@ -91,16 +91,27 @@ export default {
   position: absolute;
   left: -48px;
   text-align: center;
-  font-size: 24px;
-  border-radius: 6px 0 0 6px !important;
+  font-size: var(--font-size-2xl);
+  border-radius: var(--radius-md) 0 0 var(--radius-md) !important;
   z-index: 0;
   pointer-events: auto;
   cursor: pointer;
-  color: #fff;
+  color: var(--color-white);
   line-height: 48px;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
   i {
-    font-size: 24px;
+    font-size: var(--font-size-2xl);
     line-height: 48px;
+    transition: transform var(--transition-fast);
+
+    &:hover {
+      transform: rotate(90deg);
+    }
   }
 }
 </style>

@@ -469,4 +469,10 @@ export default {
 .due_month .el-date-picker__header {
   display: none;
 }
+
+.due_month {
+  .el-date-picker__header {
+    display: none;
+  }
+}
 </style>

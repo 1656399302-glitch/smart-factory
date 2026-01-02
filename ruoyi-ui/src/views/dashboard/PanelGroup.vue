@@ -72,95 +72,107 @@ export default {
 
 <style lang="scss" scoped>
 .panel-group {
-  margin-top: 18px;
+  margin-top: var(--spacing-md);
 
   .card-panel-col {
-    margin-bottom: 32px;
+    margin-bottom: var(--spacing-xl);
   }
 
   .card-panel {
     height: 108px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: var(--font-size-xs);
     position: relative;
     overflow: hidden;
-    color: #666;
-    background: #fff;
-    box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
-    border-color: rgba(0, 0, 0, .05);
+    color: var(--color-text-secondary);
+    background: var(--color-bg-secondary);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-md);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
 
     &:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+
       .card-panel-icon-wrapper {
-        color: #fff;
+        color: var(--color-white);
       }
 
       .icon-people {
-        background: #40c9c6;
+        background: var(--color-info);
       }
 
       .icon-message {
-        background: #36a3f7;
+        background: var(--color-accent);
       }
 
       .icon-money {
-        background: #f4516c;
+        background: var(--color-error);
       }
 
       .icon-shopping {
-        background: #34bfa3
+        background: var(--color-success);
       }
     }
 
     .icon-people {
-      color: #40c9c6;
+      color: var(--color-info);
+      transition: color var(--transition-base);
     }
 
     .icon-message {
-      color: #36a3f7;
+      color: var(--color-accent);
+      transition: color var(--transition-base);
     }
 
     .icon-money {
-      color: #f4516c;
+      color: var(--color-error);
+      transition: color var(--transition-base);
     }
 
     .icon-shopping {
-      color: #34bfa3
+      color: var(--color-success);
+      transition: color var(--transition-base);
     }
 
     .card-panel-icon-wrapper {
       float: left;
-      margin: 14px 0 0 14px;
-      padding: 16px;
-      transition: all 0.38s ease-out;
-      border-radius: 6px;
+      margin: var(--spacing-sm) 0 0 var(--spacing-sm);
+      padding: var(--spacing-md);
+      transition: all var(--transition-base);
+      border-radius: var(--radius-md);
     }
 
     .card-panel-icon {
       float: left;
       font-size: 48px;
+      transition: transform var(--transition-base);
     }
 
     .card-panel-description {
       float: right;
-      font-weight: bold;
-      margin: 26px;
+      font-weight: var(--font-weight-bold);
+      margin: var(--spacing-xl);
       margin-left: 0px;
 
       .card-panel-text {
-        line-height: 18px;
-        color: rgba(0, 0, 0, 0.45);
-        font-size: 16px;
-        margin-bottom: 12px;
+        line-height: var(--line-height-normal);
+        color: var(--color-text-tertiary);
+        font-size: var(--font-size-base);
+        margin-bottom: var(--spacing-sm);
+        transition: color var(--transition-base);
       }
 
       .card-panel-num {
-        font-size: 20px;
+        font-size: var(--font-size-xl);
+        color: var(--color-text);
+        transition: color var(--transition-base);
       }
     }
   }
 }
 
-@media (max-width:550px) {
+@media (max-width: 576px) {
   .card-panel-description {
     display: none;
   }
@@ -173,8 +185,27 @@ export default {
 
     .svg-icon {
       display: block;
-      margin: 14px auto !important;
+      margin: var(--spacing-sm) auto !important;
       float: none !important;
+    }
+  }
+}
+
+@media (min-width: 577px) and (max-width: 767px) {
+  .card-panel {
+    height: 96px;
+
+    .card-panel-icon-wrapper {
+      margin: var(--spacing-xs) 0 0 var(--spacing-xs);
+      padding: var(--spacing-sm);
+    }
+
+    .card-panel-icon {
+      font-size: 40px;
+    }
+
+    .card-panel-description {
+      margin: var(--spacing-lg);
     }
   }
 }

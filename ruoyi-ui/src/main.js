@@ -4,6 +4,9 @@ import Cookies from "js-cookie";
 
 import "./assets/styles/element-variables.scss";
 
+// 引入主题 tokens（必须在其他样式之前）
+import "@/assets/styles/tokens.css";
+
 import "@/assets/styles/index.scss"; // global css
 import "@/assets/styles/base.scss";
 import App from "./App";
@@ -46,6 +49,12 @@ import VueMeta from "vue-meta";
 import DictData from "@/components/DictData";
 // 全部表格数据查询参数
 import { allQueryParams } from "@/utils/allQueryParams";
+import { initTheme, watchSystemTheme } from "@/utils/theme";
+import { initSmoothAnchorScroll } from "@/utils/smooth-scroll";
+
+initTheme();
+watchSystemTheme();
+initSmoothAnchorScroll();
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts;

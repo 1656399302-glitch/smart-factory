@@ -888,27 +888,35 @@ export default {
 }
 .select-item {
   display: flex;
-  border: 1px dashed #fff;
+  border: 1px dashed var(--color-border-light);
   box-sizing: border-box;
+  transition: border-color var(--transition-fast);
   & .close-btn {
     cursor: pointer;
-    color: #f56c6c;
+    color: var(--color-error);
+    transition: color var(--transition-fast), transform var(--transition-fast);
+
+    &:hover {
+      color: var(--color-error);
+      transform: scale(1.1);
+    }
   }
   & .el-input + .el-input {
-    margin-left: 4px;
+    margin-left: var(--spacing-xs);
   }
 }
 .select-item + .select-item {
-  margin-top: 4px;
+  margin-top: var(--spacing-xs);
 }
 .select-item.sortable-chosen {
-  border: 1px dashed #409eff;
+  border: 1px dashed var(--color-accent);
 }
 .select-line-icon {
   line-height: 32px;
-  font-size: 22px;
-  padding: 0 4px;
-  color: #777;
+  font-size: var(--font-size-xl);
+  padding: 0 var(--spacing-xs);
+  color: var(--color-text-tertiary);
+  transition: color var(--transition-fast);
 }
 .option-drag {
   cursor: move;
@@ -929,18 +937,27 @@ export default {
   top: 0;
   left: 0;
   cursor: pointer;
-  background: #409eff;
+  background: var(--color-accent);
   z-index: 1;
-  border-radius: 0 0 6px 0;
+  border-radius: 0 0 var(--radius-md) 0;
   text-align: center;
   line-height: 26px;
-  color: #fff;
-  font-size: 18px;
+  color: var(--color-white);
+  font-size: var(--font-size-lg);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+
+  &:hover {
+    background: var(--color-accent-hover);
+    transform: scale(1.1);
+  }
 }
 .node-label{
-  font-size: 14px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  transition: color var(--transition-base);
 }
 .node-icon{
-  color: #bebfc3;
+  color: var(--color-text-tertiary);
+  transition: color var(--transition-fast);
 }
 </style>

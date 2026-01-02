@@ -196,10 +196,17 @@ export default {
 .el-rate {
   display: inline-block;
   vertical-align: text-top;
+  transition: transform var(--transition-fast);
+
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
 .el-upload__tip {
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
 }
 
 </style>

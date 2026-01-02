@@ -38,10 +38,17 @@ export default {
   vertical-align: middle;
   width: 20px;
   height: 20px;
-  fill: #555;
+  fill: var(--color-text-secondary);
+  transition: transform var(--transition-base), fill var(--transition-fast);
+
+  &:hover {
+    fill: var(--color-accent);
+    transform: scale(1.1);
+  }
 }
 
 .hamburger.is-active {
   transform: rotate(180deg);
+  fill: var(--color-accent);
 }
 </style>

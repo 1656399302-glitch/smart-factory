@@ -111,19 +111,21 @@ export default {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  background: var(--color-bg-secondary);
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-base), box-shadow var(--transition-base);
 
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
     -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, 0.025);
+      background: var(--color-bg);
+      transform: scale(1.05);
     }
   }
 
@@ -152,35 +154,47 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
+      padding: 0 var(--spacing-sm);
       height: 100%;
-      font-size: 18px;
-      color: #5a5e66;
+      font-size: var(--font-size-lg);
+      color: var(--color-text-secondary);
       vertical-align: text-bottom;
+      transition: color var(--transition-fast), transform var(--transition-fast);
 
       &.hover-effect {
         cursor: pointer;
-        transition: background 0.3s;
+        transition: background-color var(--transition-fast), transform var(--transition-fast);
 
         &:hover {
-          background: rgba(0, 0, 0, 0.025);
+          background: var(--color-bg);
+          transform: scale(1.1);
         }
       }
     }
 
     .avatar-container {
-      margin-right: 20px;
+      margin-right: var(--spacing-md);
 
       .avatar-wrapper {
-        // margin-top: 5px;
         position: relative;
+        transition: transform var(--transition-fast);
+
+        &:hover {
+          transform: scale(1.05);
+        }
 
         .user-avatar {
           cursor: pointer;
           width: 30px;
           height: 30px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           vertical-align: middle;
+          transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+
+          &:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+          }
         }
 
         .el-icon-caret-bottom {
@@ -188,7 +202,12 @@ export default {
           position: absolute;
           right: -20px;
           top: 25px;
-          font-size: 12px;
+          font-size: var(--font-size-xs);
+          transition: transform var(--transition-fast);
+
+          &:hover {
+            transform: scale(1.2);
+          }
         }
       }
     }

@@ -1,21 +1,63 @@
-Math.easeInOutQuad = function(t, b, c, d) {
-  t /= d / 2
-  if (t < 1) {
-    return c / 2 * t * t + b
+function cubicBezier(x1, y1, x2, y2) {
+  return function(t) {
+    if (t <= 0) return 0
+    if (t >= 1) return 1
+    
+    const cx = 3 * x1
+    const bx = 3 * (x2 - x1) - cx
+    const ax = 1 - cx - bx
+    
+    const cy = 3 * y1
+    const by = 3 * (y2 - y1) - cy
+    const ay = 1 - cy - by
+    
+    function sampleCurveX(t) {
+      return ((ax * t + bx) * t + cx) * t
+    }
+    
+    function sampleCurveY(t) {
+      return ((ay * t + by) * t + cy) * t
+    }
+    
+    function solve(x, epsilon) {
+      let t0, t1, t2, x2, d2, i
+      for (t2 = x, i = 0; i < 8; i++) {
+        x2 = sampleCurveX(t2) - x
+        if (Math.abs(x2) < epsilon) return sampleCurveY(t2)
+        d2 = (6 * ax * t2 + 2 * bx) * t2 + cx
+        if (Math.abs(d2) < 1e-6) break
+        t2 = t2 - x2 / d2
+      }
+      t0 = 0
+      t1 = 1
+      t2 = x
+      if (t2 < t0) return sampleCurveY(t0)
+      if (t2 > t1) return sampleCurveY(t1)
+      while (t0 < t1) {
+        x2 = sampleCurveX(t2)
+        if (Math.abs(x2 - x) < epsilon) return sampleCurveY(t2)
+        if (x > x2) t0 = t2
+        else t1 = t2
+        t2 = (t1 - t0) * 0.5 + t0
+      }
+      return sampleCurveY(t2)
+    }
+    
+    return solve(t, 0.0001)
   }
-  t--
-  return -c / 2 * (t * (t - 2) - 1) + b
 }
 
-// requestAnimationFrame for Smart Animating http://goo.gl/sx5sts
-var requestAnimFrame = (function() {
-  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(callback) { window.setTimeout(callback, 1000 / 60) }
+const easingStandard = cubicBezier(0.2, 0.8, 0.2, 1)
+
+const requestAnimFrame = (function() {
+  return window.requestAnimationFrame || 
+         window.webkitRequestAnimationFrame || 
+         window.mozRequestAnimationFrame || 
+         function(callback) { 
+           window.setTimeout(callback, 1000 / 60) 
+         }
 })()
 
-/**
- * Because it's so fucking difficult to detect the scrolling element, just move them all
- * @param {number} amount
- */
 function move(amount) {
   document.documentElement.scrollTop = amount
   document.body.parentNode.scrollTop = amount
@@ -26,33 +68,28 @@ function position() {
   return document.documentElement.scrollTop || document.body.parentNode.scrollTop || document.body.scrollTop
 }
 
-/**
- * @param {number} to
- * @param {number} duration
- * @param {Function} callback
- */
 export function scrollTo(to, duration, callback) {
   const start = position()
   const change = to - start
   const increment = 20
   let currentTime = 0
-  duration = (typeof (duration) === 'undefined') ? 500 : duration
-  var animateScroll = function() {
-    // increment the time
+  duration = (typeof (duration) === 'undefined') ? 350 : duration
+  
+  function animateScroll() {
     currentTime += increment
-    // find the value with the quadratic in-out easing function
-    var val = Math.easeInOutQuad(currentTime, start, change, duration)
-    // move the document.body
+    const progress = Math.min(currentTime / duration, 1)
+    const eased = easingStandard(progress)
+    const val = start + change * eased
     move(val)
-    // do the animation unless its over
+    
     if (currentTime < duration) {
       requestAnimFrame(animateScroll)
     } else {
       if (callback && typeof (callback) === 'function') {
-        // the animation is done so lets callback
         callback()
       }
     }
   }
+  
   animateScroll()
 }

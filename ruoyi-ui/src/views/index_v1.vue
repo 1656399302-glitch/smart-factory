@@ -79,20 +79,45 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard-editor-container {
-  padding: 32px;
-  background-color: rgb(240, 242, 245);
+  padding: var(--spacing-xl);
+  background-color: var(--color-bg);
   position: relative;
 
   .chart-wrapper {
-    background: #fff;
-    padding: 16px 16px 0;
-    margin-bottom: 32px;
+    background: var(--color-bg-secondary);
+    padding: var(--spacing-md) var(--spacing-md) 0;
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
   }
 }
 
-@media (max-width:1024px) {
+@media (max-width: 992px) {
+  .dashboard-editor-container {
+    padding: var(--spacing-lg);
+  }
+
   .chart-wrapper {
-    padding: 8px;
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-editor-container {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-editor-container {
+    padding: var(--spacing-sm);
   }
 }
 </style>

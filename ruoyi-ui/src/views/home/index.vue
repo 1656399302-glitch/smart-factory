@@ -1,16 +1,16 @@
 <template>
-  <div class="app-container home">
-    <el-card class="home-card-box">
+  <div class="app-container home u-container">
+    <el-card class="home-card-box u-card u-card-hover" v-reveal>
       <userCard />
     </el-card>
-    <el-card class="home-card-box">
+    <el-card class="home-card-box u-card u-card-hover" v-reveal>
       <dataCard />
     </el-card>
-    <div class="charts-box">
-      <el-card class="home-card-box">
+    <div class="charts-box u-grid-12">
+      <el-card class="home-card-box u-card u-card-hover u-col-12 u-col-md-5" v-reveal>
         <PieCharts class="pieCharts" />
       </el-card>
-      <el-card class="home-card-box">
+      <el-card class="home-card-box u-card u-card-hover u-col-12 u-col-md-7" v-reveal>
         <LineCharts class="lineCharts" />
       </el-card>
     </div>
@@ -48,31 +48,33 @@ export default {
 
 <style scoped lang="scss">
 .home {
-  padding: 20px;
+  padding: var(--spacing-lg);
 
   .home-card-box {
     width: 100%;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    overflow: hidden; // 隐藏内容溢出
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
   }
 
   blockquote {
-    padding: 10px 20px;
-    margin: 0 0 20px;
-    font-size: 17.5px;
-    border-left: 5px solid #eee;
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: 0 0 var(--spacing-md);
+    font-size: var(--font-size-lg);
+    border-left: 5px solid var(--color-border);
   }
 
   hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
     border: 0;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--color-border);
   }
 
   .col-item {
-    margin-bottom: 20px;
+    margin-bottom: var(--spacing-md);
   }
 
   ul {
@@ -81,8 +83,8 @@ export default {
   }
 
   font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  color: #676a6c;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
   overflow-x: hidden;
 
   ul {
@@ -94,16 +96,16 @@ export default {
   }
 
   h2 {
-    margin-top: 20px;
-    font-size: 26px;
-    font-weight: 100;
+    margin-top: var(--spacing-md);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-normal);
   }
 
   p {
-    margin-top: 10px;
+    margin-top: var(--spacing-sm);
 
     b {
-      font-weight: 700;
+      font-weight: var(--font-weight-bold);
     }
   }
 
@@ -121,10 +123,6 @@ export default {
 }
 
 .charts-box {
-  display: grid;
-  grid-template-columns: 3fr 5fr;
-  gap: 16px;
-
   .home-card-box {
     margin-bottom: 0;
   }
@@ -138,13 +136,25 @@ export default {
   }
 }
 
-@media (max-width: 768px) {
-  .charts-box {
-    grid-template-columns: 1fr;
+@media (max-width: 576px) {
+  .home {
+    padding: var(--spacing-md);
   }
 
   .lineCharts {
     height: 260px;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 767px) {
+  .lineCharts {
+    height: 280px;
+  }
+}
+
+@media (min-width: 768px) {
+  .charts-box {
+    gap: var(--spacing-md);
   }
 }
 </style>

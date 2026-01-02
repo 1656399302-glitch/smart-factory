@@ -1,9 +1,6 @@
-// global transition css
-
-/* fade */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.28s;
+  transition: opacity var(--transition-base);
 }
 
 .fade-enter,
@@ -11,11 +8,10 @@
   opacity: 0;
 }
 
-/* fade-transform */
 .fade-transform--move,
 .fade-transform-leave-active,
 .fade-transform-enter-active {
-  transition: all .5s;
+  transition: all var(--transition-slow);
 }
 
 .fade-transform-enter {
@@ -28,10 +24,9 @@
   transform: translateX(30px);
 }
 
-/* breadcrumb transition */
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
-  transition: all .5s;
+  transition: all var(--transition-slow);
 }
 
 .breadcrumb-enter,
@@ -41,7 +36,7 @@
 }
 
 .breadcrumb-move {
-  transition: all .5s;
+  transition: all var(--transition-slow);
 }
 
 .breadcrumb-leave-active {
