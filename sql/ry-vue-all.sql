@@ -44,21 +44,7 @@ INSERT INTO `ar_content` VALUES (10, '虚拟旅游', '3D场景', 'http://example
 INSERT INTO `ar_content` VALUES (11, '增强现实游戏', '游戏', 'http://example.com/ar_game', '一款支持增强现实的互动游戏。', '0', NULL);
 
 -- ----------------------------
--- Table structure for cooperation_case
--- ----------------------------
-DROP TABLE IF EXISTS `cooperation_case`;
-CREATE TABLE `cooperation_case`  (
-  `case_id` int(11) NOT NULL AUTO_INCREMENT,
-  `case_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `cooperation_unit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  PRIMARY KEY (`case_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
--- ----------------------------
--- Records of cooperation_case
--- ----------------------------
-INSERT INTO `cooperation_case` VALUES (1, '智慧医疗平台合作', '绿色能源科技有限公司', '本案例展示了与绿色能源科技有限公司的合作，共同推进环保能源项目。我们联合研发了高效太阳能发电技术，该技术不仅提高了能源转换效率，还降低了生产成本。通过此次合作，我们成功推动了可再生能源的发展，为环境保护做出了积极贡献。');
 INSERT INTO `cooperation_case` VALUES (2, '智慧城市交通解决方案合作', '未来交通科技有限公司', '本案例展示了与未来交通科技有限公司的合作，共同开发智慧城市交通解决方案。通过引入先进的传感技术和数据分析系统，我们成功缓解了城市交通拥堵问题，提高了道路通行效率，为市民提供了更加便捷、安全的出行环境。');
 
 -- ----------------------------
@@ -2076,136 +2062,27 @@ INSERT INTO `tb_course` VALUES (4, 'cp123459', 'Python+大数据', 'PythonWeb', 
 INSERT INTO `tb_course` VALUES (5, 'cp123460', '鸿蒙应用开发', '鸿蒙入门', 99, '小白学员', '鸿蒙入门', '2024-04-20 17:57:35', '2024-04-20 17:57:35');
 
 -- ----------------------------
--- Table structure for vr_carrier
--- ----------------------------
-DROP TABLE IF EXISTS `vr_carrier`;
-CREATE TABLE `vr_carrier`  (
-  `carrier_id` int(11) NOT NULL AUTO_INCREMENT,
-  `carrier_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `carrier_type` int(11) NOT NULL,
-  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
-  `specifications` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `exhibit_zone_id` int(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`carrier_id`) USING BTREE,
-  UNIQUE INDEX `vr_carrier_carrier_name_uindex`(`carrier_name` ASC) USING BTREE,
-  INDEX `exhibit_zone_id`(`exhibit_zone_id` ASC) USING BTREE,
-  CONSTRAINT `vr_carrier_ibfk_1` FOREIGN KEY (`exhibit_zone_id`) REFERENCES `vr_exhibit_zone` (`exhibit_zone_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
--- ----------------------------
--- Records of vr_carrier
--- ----------------------------
-INSERT INTO `vr_carrier` VALUES (5, '环保主题', 1, '0', '300cm*200cm', 3);
 INSERT INTO `vr_carrier` VALUES (6, '科技主题', 1, '0', '300cm*200cm', 2);
 INSERT INTO `vr_carrier` VALUES (11, '未来主题', 0, '0', '100cm*250cm', 2);
 
 -- ----------------------------
--- Table structure for vr_content
--- ----------------------------
-DROP TABLE IF EXISTS `vr_content`;
-CREATE TABLE `vr_content`  (
-  `vr_content_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `file_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `usage_status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0',
-  `carrier_id` int(11) NULL DEFAULT NULL,
-  `work_id` int(11) NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`vr_content_id`) USING BTREE,
-  INDEX `carrier_id`(`carrier_id` ASC) USING BTREE,
-  INDEX `work_id`(`work_id` ASC) USING BTREE,
-  CONSTRAINT `vr_content_ibfk_1` FOREIGN KEY (`carrier_id`) REFERENCES `vr_carrier` (`carrier_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `vr_content_ibfk_2` FOREIGN KEY (`work_id`) REFERENCES `work` (`work_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
 
 -- ----------------------------
--- Records of vr_content
--- ----------------------------
-INSERT INTO `vr_content` VALUES (14, '未来城市漫游', '声音和视频', 'http://example.com/vr_content.mp4', '本VR内容带领用户穿梭于2050年的未来城市，体验高科技与自然环境的完美融合。从智能建筑到绿色能源，感受未来生活的无限可能。', '1', 5, 1, '2025-01-24 17:32:11', '2025-01-24 17:32:11');
 
--- ----------------------------
--- Table structure for vr_exhibit_zone
--- ----------------------------
-DROP TABLE IF EXISTS `vr_exhibit_zone`;
-CREATE TABLE `vr_exhibit_zone`  (
-  `exhibit_zone_id` int(11) NOT NULL AUTO_INCREMENT,
-  `exhibit_zone_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `showroom_id` int(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`exhibit_zone_id`) USING BTREE,
-  UNIQUE INDEX `vr_exhibit_zone_exhibit_zone_name_uindex`(`exhibit_zone_name` ASC) USING BTREE,
-  INDEX `showroom_id`(`showroom_id` ASC) USING BTREE,
-  CONSTRAINT `vr_exhibit_zone_ibfk_1` FOREIGN KEY (`showroom_id`) REFERENCES `vr_showroom` (`showroom_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of vr_exhibit_zone
--- ----------------------------
-INSERT INTO `vr_exhibit_zone` VALUES (2, '未来科技互动区', '未来科技互动区是虚拟现实体验中心内的一个特色展区，它展示了最新的VR技术和互动体验设备。参观者可以在这里体验到前沿的虚拟现实游戏、教育应用以及创意作品，感受科技带来的无限可能。', 4);
 INSERT INTO `vr_exhibit_zone` VALUES (3, '智能生活体验区', '智能生活体验区是科技创新展示厅内的一个亮点展区，它聚焦于智能家居、可穿戴设备、人工智能等前沿科技在日常生活中的应用。参观者可以在这里亲身体验智能化带来的便捷与舒适，感受未来生活的无限可能。', 1);
 
 -- ----------------------------
--- Table structure for vr_material
--- ----------------------------
-DROP TABLE IF EXISTS `vr_material`;
-CREATE TABLE `vr_material`  (
-  `vr_material_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `file_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `scene_id` int(11) NOT NULL,
-  PRIMARY KEY (`vr_material_id`) USING BTREE,
-  INDEX `scene_id`(`scene_id` ASC) USING BTREE,
-  CONSTRAINT `vr_material_ibfk_1` FOREIGN KEY (`scene_id`) REFERENCES `vr_scene` (`scene_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
--- ----------------------------
--- Records of vr_material
--- ----------------------------
-INSERT INTO `vr_material` VALUES (1, '手术器械模型', '文本', 'http://example.com/vr_materials_surgery.zip', '本VR素材包含高精度的手术器械模型，适用于虚拟手术室场景。这些模型细节丰富，质感逼真，能够为用户提供近乎真实的手术操作体验。通过集成到VR环境中，医学生和实习医生可以在安全的环境中练习手术技巧，熟悉各种手术器械的使用。', 1);
 INSERT INTO `vr_material` VALUES (2, '交通监控大屏界面', '文本', 'http://example.com/vr_materials_traffic_monitor.zip', '本VR素材精心设计了一套智能交通管控中心的监控大屏界面，为用户提供沉浸式的虚拟现实体验。界面中包含了实时交通流量图、事故报警点、路况信息等关键数据展示，帮助用户更好地理解和学习智能交通系统的运作原理和功能布局。通过与VR场景的结合，使用户仿佛置身于真实的交通管控中心之中。', 2);
 
 -- ----------------------------
--- Table structure for vr_scene
--- ----------------------------
-DROP TABLE IF EXISTS `vr_scene`;
-CREATE TABLE `vr_scene`  (
-  `scene_id` int(11) NOT NULL AUTO_INCREMENT,
-  `scene_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `file_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `case_id` int(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`scene_id`) USING BTREE,
-  INDEX `case_id`(`case_id` ASC) USING BTREE,
-  CONSTRAINT `vr_scene_ibfk_1` FOREIGN KEY (`case_id`) REFERENCES `cooperation_case` (`case_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
--- ----------------------------
--- Records of vr_scene
--- ----------------------------
-INSERT INTO `vr_scene` VALUES (1, '虚拟手术室体验', 'http://example.com/vr_scene.zip', '本VR场景为用户呈现了一个高度仿真的虚拟手术室环境，通过佩戴VR设备，医学生和实习生可以在虚拟环境中进行手术操作练习，感受真实的手术氛围。场景中包含了各种手术器械和模拟患者，帮助用户熟悉手术流程，提高手术技能。', 1);
 INSERT INTO `vr_scene` VALUES (2, '智能交通管控中心体验', 'http://example.com/vr_scene_traffic.zip', '本VR场景带您走进未来智慧城市的交通管控中心，感受高科技如何助力城市交通管理。通过虚拟现实技术，您可以亲身体验智能交通系统的运作，包括实时交通监控、数据分析和自动调度等功能，展现科技如何让城市交通更加高效、安全和便捷。', 2);
 
 -- ----------------------------
--- Table structure for vr_showroom
--- ----------------------------
-DROP TABLE IF EXISTS `vr_showroom`;
-CREATE TABLE `vr_showroom`  (
-  `showroom_id` int(11) NOT NULL AUTO_INCREMENT,
-  `showroom_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`showroom_id`) USING BTREE,
-  UNIQUE INDEX `vr_showroom_showroom_name_uindex`(`showroom_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
--- ----------------------------
--- Records of vr_showroom
--- ----------------------------
-INSERT INTO `vr_showroom` VALUES (1, '虚拟现实体验中心', '虚拟现实体验中心提供了多种VR设备和互动体验，让参观者能够身临其境地感受虚拟世界的魅力。该展厅设有多个主题区域，包括游戏区、教育区和创意区，每个区域都有独特的VR内容供参观者探索。');
 INSERT INTO `vr_showroom` VALUES (2, '互动VR乐园', '互动VR乐园是一个以家庭娱乐为主题的VR展览空间。这里提供了多种适合所有年龄段人群的VR游戏和互动体验，让参观者能够在轻松愉快的氛围中享受虚拟现实的乐趣。');
 INSERT INTO `vr_showroom` VALUES (4, 'VR未来实验室', 'VR未来实验室是一个专注于虚拟现实技术研发和应用的展览空间。这里汇聚了来自全球的最新VR技术和产品，让参观者能够亲身体验到虚拟现实技术的无限可能。');
 

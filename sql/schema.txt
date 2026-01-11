@@ -1,0 +1,350 @@
+# 工厂模块数据库表结构
+
+## 核心表关系图
+
+```
+factory (工厂)
+  ├── warehouse_zone (仓库区域)
+  │   ├── material (材料)
+  │   │   ├── material_transaction_detail (材料交易明细)
+  │   │   └── supply_batch (供应批次)
+  │   └── product (产品)
+  │       ├── product_transaction_detail (产品交易明细)
+  │       └── production_batch (生产批次)
+  ├── sandbox_zone (沙盘分区)
+  ├── device (设备)
+  ├── equipment (设备)
+  │   └── maintenance_record (维护记录)
+  └── energy_consumption (能耗记录)
+
+qr_code (二维码)
+  ├── device (设备)
+  ├── equipment (设备)
+  ├── ar_content (AR内容)
+  └── sandbox_zone (沙盘分区)
+
+material_transaction (材料交易)
+  └── material_transaction_detail (材料交易明细)
+
+product_transaction (产品交易)
+  └── product_transaction_detail (产品交易明细)
+
+ar_applications (AR应用)
+  └── ar_application_configuration (AR应用配置)
+```
+
+---
+
+## factory
+**说明**: 工厂基础信息表
+
+**注释**: 存储工厂的基本信息，包括名称、描述、联系人、电话、地址等。作为工厂模块的核心表，其他表通过 factory_id 关联到此表。
+
+**字段**:
+  factory_id: int
+  name: varchar(255)
+  description: text
+  contact_person: varchar(255)
+  contact_phone: varchar(20)
+  address: varchar(255)
+
+
+## device
+**说明**: 设备表
+
+**注释**: 存储工厂内的设备信息，包括设备名称、描述、状态等。通过 factory_number 关联到工厂，通过 qr_code_number 关联到二维码。
+
+**字段**:
+  device_number: int
+  name: varchar(100)
+  description: varchar(255)
+  status: varchar(255)
+  qr_code_number: int
+  factory_number: int
+
+**外键关系**:
+  - qr_code_number -> qr_code.qr_code_id
+  - factory_number -> factory.factory_id
+
+
+## equipment
+**说明**: 设备表
+
+**注释**: 存储设备信息，与 device 表类似但字段略有不同。通过 factory_id 关联到工厂，通过 qr_code_id 关联到二维码。
+
+**字段**:
+  equipment_id: int
+  name: varchar(255)
+  description: text
+  equipment_status: varchar(50)
+  qr_code_id: int
+  factory_id: int
+
+
+## qr_code
+**说明**: 二维码表
+
+**注释**: 存储二维码信息，用于AR扫描识别。多个表通过 qr_code_id 关联到此表，实现设备、区域与AR内容的关联。
+
+**字段**:
+  qr_code_id: int
+  qr_code_name: varchar(50)
+  qr_code: varchar(255)
+  usage_status: varchar(50)
+
+
+## warehouse_zone
+**说明**: 仓库区域表
+
+**注释**: 存储工厂内的仓库区域信息，每个区域属于一个工厂。材料表和产品表通过 warehouse_zone_id 关联到此表。
+
+**字段**:
+  zone_id: int
+  name: varchar(255)
+  description: text
+  factory_id: int
+
+**外键关系**:
+  - factory_id -> factory.factory_id
+
+
+## sandbox_zone
+**说明**: 沙盘分区表
+
+**注释**: 存储工厂沙盘的分区信息，用于AR展示。通过 factory_id 关联到工厂，通过 qr_code_id 关联到二维码。
+
+**字段**:
+  zone_id: int
+  name: varchar(255)
+  description: text
+  qr_code_id: int
+  factory_id: int
+
+**外键关系**:
+  - qr_code_id -> qr_code.qr_code_id
+  - factory_id -> factory.factory_id
+
+
+## material
+**说明**: 材料表
+
+**注释**: 存储工厂使用的材料信息，包括材料名称、型号、描述、库存量等。通过 warehouse_zone_id 关联到仓库区域。
+
+**字段**:
+  material_id: int
+  material_name: varchar(255)
+  material_model: varchar(255)
+  material_description: text
+  stock_amount: int
+  warehouse_zone_id: int
+
+**外键关系**:
+  - warehouse_zone_id -> warehouse_zone.zone_id
+
+
+## material_transaction
+**说明**: 材料交易表
+
+**注释**: 存储材料的出入库单信息，包括交易类型、经办人、库区管理员等。一个交易单可以包含多个材料明细。
+
+**字段**:
+  transaction_id: int
+  transaction_type: int
+  operator_name: varchar(255)
+  warehouse_admin_name: varchar(255)
+
+
+## material_transaction_detail
+**说明**: 材料交易明细表
+
+**注释**: 存储材料交易的明细信息，包括材料ID、交易单ID、数量、交易日期等。通过 material_id 和 transaction_id 分别关联到材料表和交易表。
+
+**字段**:
+  material_id: int
+  transaction_id: int
+  quantity: int
+  transaction_date: date
+
+**外键关系**:
+  - material_id -> material.material_id
+  - transaction_id -> material_transaction.transaction_id
+
+
+## product
+**说明**: 产品表
+
+**注释**: 存储工厂生产的产品信息，包括产品名称、型号、描述、库存量等。通过 warehouse_zone_id 关联到仓库区域。
+
+**字段**:
+  product_id: int
+  product_name: varchar(255)
+  product_model: varchar(255)
+  product_description: text
+  stock_amount: int
+  warehouse_zone_id: int
+
+**外键关系**:
+  - warehouse_zone_id -> warehouse_zone.zone_id
+
+
+## product_transaction
+**说明**: 产品交易表
+
+**注释**: 存储产品的出入库单信息，包括交易类型、经办人、库区管理员等。一个交易单可以包含多个产品明细。
+
+**字段**:
+  transaction_id: int
+  transaction_type: int
+  operator_name: varchar(255)
+  warehouse_admin_name: varchar(255)
+
+
+## product_transaction_detail
+**说明**: 产品交易明细表
+
+**注释**: 存储产品交易的明细信息，包括产品ID、交易单ID、数量、交易日期等。通过 product_id 和 transaction_id 分别关联到产品表和交易表。
+
+**字段**:
+  product_id: int
+  transaction_id: int
+  quantity: int
+  transaction_date: date
+
+**外键关系**:
+  - product_id -> product.product_id
+  - transaction_id -> product_transaction.transaction_id
+
+
+## production_batch
+**说明**: 生产批次表
+
+**注释**: 存储产品的生产批次信息，包括数量、单位、生产日期、保质期等。通过 product_id 关联到产品表，一个产品可以有多个生产批次。
+
+**字段**:
+  batch_id: int
+  quantity: int
+  unit: varchar(50)
+  production_date: date
+  shelf_life: varchar(50)
+  product_id: int
+
+**外键关系**:
+  - product_id -> product.product_id
+
+
+## supply_batch
+**说明**: 供应批次表
+
+**注释**: 存储材料的供应批次信息，包括数量、单位、生产日期、保质期、生产厂家等。通过 material_id 关联到材料表，一个材料可以有多个供应批次。
+
+**字段**:
+  batch_id: int
+  quantity: int
+  unit: varchar(50)
+  production_date: date
+  shelf_life: varchar(50)
+  manufacturer: varchar(255)
+  material_id: int
+
+**外键关系**:
+  - material_id -> material.material_id
+
+
+## energy_consumption
+**说明**: 能耗清单表
+
+**注释**: 存储工厂的能耗记录，包括能耗值、单位、类型、年月等。通过 factory_id 关联到工厂，用于统计和分析工厂的能耗情况。
+
+**字段**:
+  id: int
+  energy_consumed: decimal
+  unit: varchar(50)
+  type: varchar(50)
+  year: int
+  month: tinyint
+  factory_id: varchar(50)
+
+
+## maintenance_record
+**说明**: 维护记录表
+
+**注释**: 存储设备的维护记录，包括维护日志、日期、维护负责人等。通过 equipment_id 关联到设备表，一个设备可以有多条维护记录。
+
+**字段**:
+  record_id: int
+  maintenance_log: text
+  date: date
+  maintainer_name: varchar(255)
+  equipment_id: int
+
+
+## ar_content
+**说明**: AR内容表
+
+**注释**: 存储AR展示的内容信息，包括名称、类别、文件URL、描述等。通过 qr_code_id 关联到二维码表，扫描二维码时显示对应的AR内容。
+
+**字段**:
+  ar_content_id: int
+  name: varchar(255)
+  category: varchar(255)
+  file_url: varchar(500)
+  description: text
+  usage_status: varchar(50)
+  qr_code_id: int
+
+**外键关系**:
+  - qr_code_id -> qr_code.qr_code_id
+
+
+## ar_applications
+**说明**: AR应用表
+
+**注释**: 存储AR应用的基本信息，包括名称、描述、版本号、发布日期等。用于管理AR应用的版本。
+
+**字段**:
+  ApplicationID: int
+  Name: varchar(255)
+  Description: text
+  Version: varchar(50)
+  ReleaseDate: date
+
+
+## ar_application_configuration
+**说明**: AR应用配置表
+
+**注释**: 存储AR应用的配置信息，包括触发方式、显示方式、屏幕分辨率、视频分辨率、隐私设置等。通过 app_id 关联到AR应用表。
+
+**字段**:
+  id: int
+  trigger_method: varchar(255)
+  display_method: varchar(255)
+  screen_resolution: varchar(50)
+  video_resolution: varchar(50)
+  privacy_settings: varchar(50)
+  app_id: int
+  created_at: timestamp
+
+
+## device_association
+**说明**: 设备关联表
+
+**注释**: 存储设备与二维码的关联关系，用于设备管理。
+
+**字段**:
+  qr_code_id: int
+  qr_code_name: varchar(255)
+  qr_code: text
+  usage_status: varchar(50)
+
+
+## sand_association
+**说明**: 沙盘关联表
+
+**注释**: 存储沙盘分区与二维码的关联关系，用于沙盘管理。
+
+**字段**:
+  qr_code_id: int
+  qr_code_name: varchar(255)
+  qr_code: text
+  usage_status: varchar(50)
+
