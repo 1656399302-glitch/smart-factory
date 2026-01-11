@@ -25,6 +25,20 @@ if ! command -v mvn &> /dev/null; then
     USE_JAR=1
 fi
 
+# 是否强制重新编译（可通过环境变量或参数触发）
+# 用法：
+#   FORCE_BUILD=1 ./start.sh
+#   ./start.sh --build
+FORCE_BUILD=0
+if [ "$FORCE_BUILD" = "1" ]; then
+    FORCE_BUILD=1
+fi
+for arg in "$@"; do
+    if [ "$arg" = "--build" ]; then
+        FORCE_BUILD=1
+    fi
+done
+
 # 检查是否需要编译
 NEED_BUILD=0
 if [ $USE_JAR -eq 1 ]; then
@@ -37,6 +51,11 @@ else
     if [ ! -d "ruoyi-common/target/classes" ] || [ ! -d "ruoyi-system/target/classes" ] || [ ! -d "ruoyi-framework/target/classes" ]; then
         NEED_BUILD=1
     fi
+fi
+
+# 强制编译（用于代码有改动但 target/classes 仍存在的情况）
+if [ $FORCE_BUILD -eq 1 ]; then
+    NEED_BUILD=1
 fi
 
 # 如果需要编译，先编译项目

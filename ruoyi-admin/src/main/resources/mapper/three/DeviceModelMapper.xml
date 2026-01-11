@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.three.mapper.DeviceModelMapper">
+
+    <resultMap type="com.ruoyi.three.domain.DeviceModel" id="DeviceModelResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="category" column="category"/>
+        <result property="modelUrl" column="model_url"/>
+        <result property="modelFormat" column="model_format"/>
+        <result property="defaultScale" column="default_scale"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectDeviceModelVo">
+        select id, name, category, model_url, model_format, default_scale, status,
+               create_by, create_time, update_by, update_time, remark
+        from device_model
+    </sql>
+
+    <select id="selectDeviceModelById" parameterType="Long" resultMap="DeviceModelResult">
+        <include refid="selectDeviceModelVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectDeviceModelList" parameterType="com.ruoyi.three.domain.DeviceModel" resultMap="DeviceModelResult">
+        <include refid="selectDeviceModelVo"/>
+        <where>
+            <if test="name != null and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="category != null and category != ''">and category = #{category}</if>
+            <if test="status != null and status != ''">and status = #{status}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="insertDeviceModel" parameterType="com.ruoyi.three.domain.DeviceModel" useGeneratedKeys="true" keyProperty="id">
+        insert into device_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="category != null and category != ''">category,</if>
+            <if test="modelUrl != null and modelUrl != ''">model_url,</if>
+            <if test="modelFormat != null and modelFormat != ''">model_format,</if>
+            <if test="defaultScale != null and defaultScale != ''">default_scale,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="category != null and category != ''">#{category},</if>
+            <if test="modelUrl != null and modelUrl != ''">#{modelUrl},</if>
+            <if test="modelFormat != null and modelFormat != ''">#{modelFormat},</if>
+            <if test="defaultScale != null and defaultScale != ''">#{defaultScale},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDeviceModel" parameterType="com.ruoyi.three.domain.DeviceModel">
+        update device_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="modelUrl != null">model_url = #{modelUrl},</if>
+            <if test="modelFormat != null">model_format = #{modelFormat},</if>
+            <if test="defaultScale != null">default_scale = #{defaultScale},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDeviceModelById" parameterType="Long">
+        delete from device_model where id = #{id}
+    </delete>
+
+    <delete id="deleteDeviceModelByIds" parameterType="Long">
+        delete from device_model where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
+
+

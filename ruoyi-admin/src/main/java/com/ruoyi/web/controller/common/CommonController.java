@@ -1,7 +1,6 @@
 package com.ruoyi.web.controller.common;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +10,6 @@ import com.ruoyi.ar.domain.ArContent;
 import com.ruoyi.ar.service.IArContentService;
 import com.ruoyi.system.domain.dto.MonthlyRegistrationsDTO;
 import com.ruoyi.system.service.IUserStatisticsService;
-import org.dromara.x.file.storage.core.FileInfo;
-import org.dromara.x.file.storage.core.FileStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +38,6 @@ public class CommonController {
     @Autowired
     private ServerConfig serverConfig;
 
-    @Autowired
-    private FileStorageService fileStorageService;//注入实列
-
     private static final String FILE_DELIMETER = ",";
 
     @Autowired
@@ -52,10 +46,9 @@ public class CommonController {
     @Autowired
     private IUserStatisticsService userStatisticsService;
 
-
     @GetMapping("/getHomeData")
     public AjaxResult getHomeData() {
-        //查询AR内容
+        // 查询AR内容
         List<ArContent> arContentList = arContentService.selectArContentList(null);
 
         AjaxResult ajax = AjaxResult.success();
@@ -63,21 +56,24 @@ public class CommonController {
         return ajax;
     }
 
-//    @GetMapping("/monthly-registrations")
-//    public ResponseEntity<List<MonthlyRegistrationsDTO>> getMonthlyRegistrations(
-//            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-//            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-//
-//        return ResponseEntity.ok(
-//                userStatisticsService.getMonthlyRegistrations(startDate, endDate)
-//        );
-//    }
+    // @GetMapping("/monthly-registrations")
+    // public ResponseEntity<List<MonthlyRegistrationsDTO>> getMonthlyRegistrations(
+    // @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate
+    // startDate,
+    // @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate
+    // endDate) {
+    //
+    // return ResponseEntity.ok(
+    // userStatisticsService.getMonthlyRegistrations(startDate, endDate)
+    // );
+    // }
 
     @GetMapping("/monthly-registrations")
     public AjaxResult getMonthlyRegistrations(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        List<MonthlyRegistrationsDTO> monthlyRegistrations = userStatisticsService.getMonthlyRegistrations(startDate, endDate);
+        List<MonthlyRegistrationsDTO> monthlyRegistrations = userStatisticsService.getMonthlyRegistrations(startDate,
+                endDate);
         return AjaxResult.success(monthlyRegistrations);
     }
 
@@ -88,7 +84,8 @@ public class CommonController {
      * @param delete   是否删除
      */
     @GetMapping("/download")
-    public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request) {
+    public void fileDownload(String fileName, Boolean delete, HttpServletResponse response,
+            HttpServletRequest request) {
         try {
             if (!FileUtils.checkAllowDownload(fileName)) {
                 throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
@@ -113,20 +110,21 @@ public class CommonController {
     @PostMapping("/upload")
     public AjaxResult uploadFile(MultipartFile file) throws Exception {
         try {
+            // 优先使用本地存储（RuoYi 原生上传），避免因未配置 OSS 平台导致上传失败
+            // 上传文件路径
+            String filePath = RuoYiConfig.getUploadPath();
+            // 上传并返回资源访问路径（形如：/profile/xxx/yyy.ext）
+            String fileName = FileUploadUtils.upload(filePath, file);
 
-
-            // 指定oss保存文件路径
-            String objectName = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) + "/";
-            // 上传图片，成功返回文件信息
-            FileInfo fileInfo = fileStorageService.of(file).setPath(objectName).upload();
-            // 设置返回结果
             AjaxResult ajax = AjaxResult.success();
-            ajax.put("url", fileInfo.getUrl());
-            ajax.put("fileName", fileInfo.getUrl());  //注意：这里的值要改为url，前端访问的地址,需要文件的地址 而不是文件名称
-            ajax.put("newFileName", fileInfo.getUrl());
+            ajax.put("url", serverConfig.getUrl() + fileName);
+            ajax.put("fileName", fileName);
+            ajax.put("newFileName", FileUtils.getName(fileName));
             ajax.put("originalFilename", file.getOriginalFilename());
             return ajax;
         } catch (Exception e) {
+            // 兼容：若你后续补齐 OSS 平台配置，也可在这里改回优先 OSS 或按文件类型分流
+            log.error("通用上传失败", e);
             return AjaxResult.error(e.getMessage());
         }
     }
@@ -147,7 +145,7 @@ public class CommonController {
                 // 上传并返回新文件名称
                 String fileName = FileUploadUtils.upload(filePath, file);
                 String url = serverConfig.getUrl() + fileName;
-                //String url = fileName;
+                // String url = fileName;
                 urls.add(url);
                 fileNames.add(fileName);
                 newFileNames.add(FileUtils.getName(fileName));

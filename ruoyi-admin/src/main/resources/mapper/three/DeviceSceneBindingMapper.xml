@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.three.mapper.DeviceSceneBindingMapper">
+
+    <resultMap type="com.ruoyi.three.domain.DeviceSceneBinding" id="DeviceSceneBindingResult">
+        <result property="id" column="id"/>
+        <result property="factoryModelId" column="factory_model_id"/>
+        <result property="deviceNumber" column="device_number"/>
+        <result property="deviceModelId" column="device_model_id"/>
+        <result property="positionX" column="position_x"/>
+        <result property="positionY" column="position_y"/>
+        <result property="positionZ" column="position_z"/>
+        <result property="rotationX" column="rotation_x"/>
+        <result property="rotationY" column="rotation_y"/>
+        <result property="rotationZ" column="rotation_z"/>
+        <result property="scaleX" column="scale_x"/>
+        <result property="scaleY" column="scale_y"/>
+        <result property="scaleZ" column="scale_z"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectDeviceSceneBindingVo">
+        select id, factory_model_id, device_number, device_model_id,
+               position_x, position_y, position_z,
+               rotation_x, rotation_y, rotation_z,
+               scale_x, scale_y, scale_z,
+               create_by, create_time, update_by, update_time
+        from device_scene_binding
+    </sql>
+
+    <select id="selectDeviceSceneBindingById" parameterType="Long" resultMap="DeviceSceneBindingResult">
+        <include refid="selectDeviceSceneBindingVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectDeviceSceneBindingList" parameterType="com.ruoyi.three.domain.DeviceSceneBinding" resultMap="DeviceSceneBindingResult">
+        <include refid="selectDeviceSceneBindingVo"/>
+        <where>
+            <if test="factoryModelId != null">and factory_model_id = #{factoryModelId}</if>
+            <if test="deviceNumber != null">and device_number = #{deviceNumber}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="insertDeviceSceneBinding" parameterType="com.ruoyi.three.domain.DeviceSceneBinding" useGeneratedKeys="true" keyProperty="id">
+        insert into device_scene_binding
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="factoryModelId != null">factory_model_id,</if>
+            <if test="deviceNumber != null">device_number,</if>
+            <if test="deviceModelId != null">device_model_id,</if>
+            <if test="positionX != null">position_x,</if>
+            <if test="positionY != null">position_y,</if>
+            <if test="positionZ != null">position_z,</if>
+            <if test="rotationX != null">rotation_x,</if>
+            <if test="rotationY != null">rotation_y,</if>
+            <if test="rotationZ != null">rotation_z,</if>
+            <if test="scaleX != null">scale_x,</if>
+            <if test="scaleY != null">scale_y,</if>
+            <if test="scaleZ != null">scale_z,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="factoryModelId != null">#{factoryModelId},</if>
+            <if test="deviceNumber != null">#{deviceNumber},</if>
+            <if test="deviceModelId != null">#{deviceModelId},</if>
+            <if test="positionX != null">#{positionX},</if>
+            <if test="positionY != null">#{positionY},</if>
+            <if test="positionZ != null">#{positionZ},</if>
+            <if test="rotationX != null">#{rotationX},</if>
+            <if test="rotationY != null">#{rotationY},</if>
+            <if test="rotationZ != null">#{rotationZ},</if>
+            <if test="scaleX != null">#{scaleX},</if>
+            <if test="scaleY != null">#{scaleY},</if>
+            <if test="scaleZ != null">#{scaleZ},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDeviceSceneBinding" parameterType="com.ruoyi.three.domain.DeviceSceneBinding">
+        update device_scene_binding
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="factoryModelId != null">factory_model_id = #{factoryModelId},</if>
+            <if test="deviceNumber != null">device_number = #{deviceNumber},</if>
+            <if test="deviceModelId != null">device_model_id = #{deviceModelId},</if>
+            <if test="positionX != null">position_x = #{positionX},</if>
+            <if test="positionY != null">position_y = #{positionY},</if>
+            <if test="positionZ != null">position_z = #{positionZ},</if>
+            <if test="rotationX != null">rotation_x = #{rotationX},</if>
+            <if test="rotationY != null">rotation_y = #{rotationY},</if>
+            <if test="rotationZ != null">rotation_z = #{rotationZ},</if>
+            <if test="scaleX != null">scale_x = #{scaleX},</if>
+            <if test="scaleY != null">scale_y = #{scaleY},</if>
+            <if test="scaleZ != null">scale_z = #{scaleZ},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDeviceSceneBindingById" parameterType="Long">
+        delete from device_scene_binding where id = #{id}
+    </delete>
+
+    <delete id="deleteDeviceSceneBindingByIds" parameterType="Long">
+        delete from device_scene_binding where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectViewerDeviceListByFactoryId" parameterType="Long" resultType="com.ruoyi.three.vo.SceneViewerDeviceVO">
+        select
+            d.device_number as deviceNumber,
+            d.name as name,
+            d.status as status,
+            b.id as bindingId,
+            b.device_model_id as deviceModelId,
+            dm.model_url as deviceModelUrl,
+            dm.model_format as deviceModelFormat,
+            b.position_x as positionX,
+            b.position_y as positionY,
+            b.position_z as positionZ,
+            b.rotation_x as rotationX,
+            b.rotation_y as rotationY,
+            b.rotation_z as rotationZ,
+            b.scale_x as scaleX,
+            b.scale_y as scaleY,
+            b.scale_z as scaleZ
+        from factory_model fm
+        inner join device d on d.factory_number = cast(fm.factory_id as char)
+        left join device_scene_binding b on b.factory_model_id = fm.id and b.device_number = d.device_number
+        left join device_model dm on dm.id = b.device_model_id
+        where fm.factory_id = #{factoryId}
+          and fm.status = 'published'
+        order by d.device_number asc
+    </select>
+
+</mapper>
+
+
