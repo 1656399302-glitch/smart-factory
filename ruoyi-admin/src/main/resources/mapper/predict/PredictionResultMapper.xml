@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.predict.mapper.PredictionResultMapper">
+    
+    <resultMap type="com.ruoyi.predict.domain.PredictionResult" id="PredictionResultResult">
+        <result property="id"    column="id"    />
+        <result property="factoryId"    column="factory_id"    />
+        <result property="assetType"    column="asset_type"    />
+        <result property="assetId"    column="asset_id"    />
+        <result property="predictionTime"    column="prediction_time"    />
+        <result property="riskLevel"    column="risk_level"    />
+        <result property="riskScore"    column="risk_score"    />
+        <result property="reasonSummary"    column="reason_summary"    />
+        <result property="reasonDetailJson"    column="reason_detail_json"    />
+        <result property="recommendation"    column="recommendation"    />
+        <result property="status"    column="status"    />
+        <result property="handledBy"    column="handled_by"    />
+        <result property="handledTime"    column="handled_time"    />
+        <result property="modelVersion"    column="model_version"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="assetName"    column="asset_name"    />
+        <result property="factoryName"    column="factory_name"    />
+    </resultMap>
+
+    <sql id="selectPredictionResultVo">
+        select pr.id, pr.factory_id, pr.asset_type, pr.asset_id, pr.prediction_time, 
+               pr.risk_level, pr.risk_score, pr.reason_summary, pr.reason_detail_json, 
+               pr.recommendation, pr.status, pr.handled_by, pr.handled_time, 
+               pr.model_version, pr.remark, pr.create_by, pr.create_time, 
+               pr.update_by, pr.update_time,
+               f.name as factory_name,
+               CASE 
+                   WHEN pr.asset_type = 'equipment' THEN e.name
+                   WHEN pr.asset_type = 'device' THEN d.name
+                   ELSE NULL
+               END as asset_name
+        from prediction_result pr
+        left join factory f on pr.factory_id = f.factory_id
+        left join equipment e on pr.asset_type = 'equipment' and pr.asset_id = e.equipment_id
+        left join device d on pr.asset_type = 'device' and pr.asset_id = d.device_number
+    </sql>
+
+    <select id="selectPredictionResultList" parameterType="com.ruoyi.predict.domain.PredictionResult" resultMap="PredictionResultResult">
+        <include refid="selectPredictionResultVo"/>
+        <where>  
+            <if test="factoryId != null "> and pr.factory_id = #{factoryId}</if>
+            <if test="assetType != null  and assetType != ''"> and pr.asset_type = #{assetType}</if>
+            <if test="assetId != null "> and pr.asset_id = #{assetId}</if>
+            <if test="riskLevel != null  and riskLevel != ''"> and pr.risk_level = #{riskLevel}</if>
+            <if test="status != null  and status != ''"> and pr.status = #{status}</if>
+            <if test="beginPredictionTime != null and beginPredictionTime != ''"> 
+                and pr.prediction_time &gt;= #{beginPredictionTime}
+            </if>
+            <if test="endPredictionTime != null and endPredictionTime != ''"> 
+                and pr.prediction_time &lt;= #{endPredictionTime}
+            </if>
+        </where>
+        order by pr.prediction_time desc
+    </select>
+    
+    <select id="selectPredictionResultById" parameterType="Long" resultMap="PredictionResultResult">
+        <include refid="selectPredictionResultVo"/>
+        where pr.id = #{id}
+    </select>
+
+    <insert id="insertPredictionResult" parameterType="com.ruoyi.predict.domain.PredictionResult" useGeneratedKeys="true" keyProperty="id">
+        insert into prediction_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="factoryId != null">factory_id,</if>
+            <if test="assetType != null and assetType != ''">asset_type,</if>
+            <if test="assetId != null">asset_id,</if>
+            <if test="predictionTime != null">prediction_time,</if>
+            <if test="riskLevel != null and riskLevel != ''">risk_level,</if>
+            <if test="riskScore != null">risk_score,</if>
+            <if test="reasonSummary != null">reason_summary,</if>
+            <if test="reasonDetailJson != null">reason_detail_json,</if>
+            <if test="recommendation != null">recommendation,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="handledBy != null">handled_by,</if>
+            <if test="handledTime != null">handled_time,</if>
+            <if test="modelVersion != null">model_version,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="factoryId != null">#{factoryId},</if>
+            <if test="assetType != null and assetType != ''">#{assetType},</if>
+            <if test="assetId != null">#{assetId},</if>
+            <if test="predictionTime != null">#{predictionTime},</if>
+            <if test="riskLevel != null and riskLevel != ''">#{riskLevel},</if>
+            <if test="riskScore != null">#{riskScore},</if>
+            <if test="reasonSummary != null">#{reasonSummary},</if>
+            <if test="reasonDetailJson != null">#{reasonDetailJson},</if>
+            <if test="recommendation != null">#{recommendation},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="handledBy != null">#{handledBy},</if>
+            <if test="handledTime != null">#{handledTime},</if>
+            <if test="modelVersion != null">#{modelVersion},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+         </trim>
+    </insert>
+
+    <update id="updatePredictionResult" parameterType="com.ruoyi.predict.domain.PredictionResult">
+        update prediction_result
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="factoryId != null">factory_id = #{factoryId},</if>
+            <if test="assetType != null and assetType != ''">asset_type = #{assetType},</if>
+            <if test="assetId != null">asset_id = #{assetId},</if>
+            <if test="predictionTime != null">prediction_time = #{predictionTime},</if>
+            <if test="riskLevel != null and riskLevel != ''">risk_level = #{riskLevel},</if>
+            <if test="riskScore != null">risk_score = #{riskScore},</if>
+            <if test="reasonSummary != null">reason_summary = #{reasonSummary},</if>
+            <if test="reasonDetailJson != null">reason_detail_json = #{reasonDetailJson},</if>
+            <if test="recommendation != null">recommendation = #{recommendation},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="handledBy != null">handled_by = #{handledBy},</if>
+            <if test="handledTime != null">handled_time = #{handledTime},</if>
+            <if test="modelVersion != null">model_version = #{modelVersion},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePredictionResultById" parameterType="Long">
+        delete from prediction_result where id = #{id}
+    </delete>
+
+    <delete id="deletePredictionResultByIds" parameterType="String">
+        delete from prediction_result where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 检查当天是否已有预测记录 -->
+    <select id="checkTodayPrediction" resultType="int">
+        select count(*) from prediction_result 
+        where asset_type = #{assetType} 
+          and asset_id = #{assetId} 
+          and DATE(prediction_time) = #{dateStr}
+    </select>
+
+    <!-- 获取设备维护统计信息 -->
+    <select id="getEquipmentMaintenanceStats" resultType="java.util.HashMap">
+        select 
+            MAX(date) as last_maintenance_date,
+            DATEDIFF(CURDATE(), MAX(date)) as days_since_last,
+            SUM(CASE WHEN date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN 1 ELSE 0 END) as count_30d,
+            SUM(CASE WHEN date >= DATE_SUB(CURDATE(), INTERVAL 90 DAY) THEN 1 ELSE 0 END) as count_90d,
+            COUNT(*) as total_count
+        from maintenance_record 
+        where equipment_id = #{equipmentId}
+    </select>
+
+    <!-- 检查维护记录关键词命中情况 -->
+    <select id="checkMaintenanceKeywords" resultType="int">
+        select count(*) from maintenance_record 
+        where equipment_id = #{equipmentId}
+          and date >= DATE_SUB(CURDATE(), INTERVAL 90 DAY)
+          and (
+              maintenance_log like '%过热%' 
+              or maintenance_log like '%异响%' 
+              or maintenance_log like '%漏油%' 
+              or maintenance_log like '%震动%' 
+              or maintenance_log like '%报警%' 
+              or maintenance_log like '%损坏%'
+              or maintenance_log like '%故障%'
+              or maintenance_log like '%异常%'
+          )
+    </select>
+</mapper>

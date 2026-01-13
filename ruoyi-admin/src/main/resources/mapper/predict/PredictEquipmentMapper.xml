@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.predict.mapper.PredictEquipmentMapper">
+
+    <!-- 查询设备列表（用于预测） -->
+    <select id="selectEquipmentForPrediction" resultType="java.util.HashMap">
+        select equipment_id, name, factory_id
+        from equipment
+        <where>
+            <if test="factoryId != null">
+                and factory_id = #{factoryId}
+            </if>
+            <if test="equipmentIds != null and equipmentIds.size() > 0">
+                and equipment_id in
+                <foreach item="id" collection="equipmentIds" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        order by equipment_id
+    </select>
+
+    <!-- 根据ID查询设备 -->
+    <select id="selectEquipmentById" resultType="java.util.HashMap">
+        select equipment_id, name, factory_id
+        from equipment
+        where equipment_id = #{equipmentId}
+    </select>
+
+    <!-- 查询device设备列表（用于预测） -->
+    <select id="selectDeviceForPrediction" resultType="java.util.HashMap">
+        select device_number, name, factory_number
+        from device
+        <where>
+            <if test="factoryId != null">
+                and factory_number = #{factoryId}
+            </if>
+            <if test="deviceIds != null and deviceIds.size() > 0">
+                and device_number in
+                <foreach item="id" collection="deviceIds" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        order by device_number
+    </select>
+
+</mapper>

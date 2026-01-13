@@ -348,3 +348,35 @@ ar_applications (AR应用)
   qr_code: text
   usage_status: varchar(50)
 
+
+## prediction_result
+**说明**: 预测结果表
+
+**注释**: 存储预测性维护模块的预测结果，包括风险等级、风险分数、原因解释、建议维护动作和处理状态。通过 asset_type 和 asset_id 关联到设备表（equipment/device），通过 factory_id 关联到工厂表。
+
+**字段**:
+  id: bigint (主键)
+  factory_id: bigint (工厂ID)
+  asset_type: varchar(50) (资产类型：equipment/device)
+  asset_id: bigint (资产ID)
+  prediction_time: datetime (预测生成时间)
+  risk_level: varchar(20) (风险等级：low/medium/high)
+  risk_score: int (风险分数0-100)
+  reason_summary: varchar(500) (原因摘要)
+  reason_detail_json: text (原因详情JSON，可解释)
+  recommendation: text (建议维护动作)
+  status: varchar(20) (状态：new/acknowledged/ignored/resolved)
+  handled_by: varchar(100) (处理人)
+  handled_time: datetime (处理时间)
+  model_version: varchar(50) (模型版本)
+  remark: varchar(500) (备注)
+  create_by: varchar(64)
+  create_time: datetime
+  update_by: varchar(64)
+  update_time: datetime
+
+**外键关系**:
+  - factory_id -> factory.factory_id
+  - asset_type=equipment时: asset_id -> equipment.equipment_id
+  - asset_type=device时: asset_id -> device.device_number
+

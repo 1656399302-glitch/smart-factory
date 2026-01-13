@@ -171,9 +171,9 @@ echo "========================================"
 echo ""
 echo "后端服务地址: http://localhost:8081"
 if [ -n "$FRONTEND_PORT" ]; then
-    echo "前端服务地址: http://localhost:$FRONTEND_PORT"
+    echo "前端服务地址: http://localhost:1024"
 else
-    echo "前端服务地址: http://localhost:80 (请查看前端日志确认实际端口)"
+    echo "前端服务地址: http://localhost:1024 (请查看前端日志确认实际端口)"
 fi
 echo ""
 echo "提示: "
