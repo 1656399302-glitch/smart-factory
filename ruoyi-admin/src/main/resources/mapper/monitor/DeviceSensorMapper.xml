@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.monitor.mapper.DeviceSensorMapper">
+    
+    <resultMap type="com.ruoyi.monitor.domain.DeviceSensor" id="DeviceSensorResult">
+        <result property="sensorId"       column="sensor_id"       />
+        <result property="deviceNumber"   column="device_number"   />
+        <result property="sensorCode"     column="sensor_code"     />
+        <result property="sensorName"     column="sensor_name"     />
+        <result property="sensorType"     column="sensor_type"     />
+        <result property="unit"           column="unit"            />
+        <result property="collectInterval" column="collect_interval"/>
+        <result property="status"         column="status"          />
+        <result property="remark"         column="remark"          />
+        <result property="createBy"       column="create_by"       />
+        <result property="createTime"     column="create_time"     />
+        <result property="updateBy"       column="update_by"       />
+        <result property="updateTime"     column="update_time"     />
+        <result property="deviceName"     column="device_name"     />
+    </resultMap>
+
+    <sql id="selectDeviceSensorVo">
+        select ds.sensor_id, ds.device_number, ds.sensor_code, ds.sensor_name, ds.sensor_type, 
+               ds.unit, ds.collect_interval, ds.status, ds.remark, ds.create_by, ds.create_time, 
+               ds.update_by, ds.update_time, d.name as device_name
+        from device_sensor ds
+        left join device d on ds.device_number = d.device_number
+    </sql>
+
+    <select id="selectDeviceSensorBySensorId" parameterType="Long" resultMap="DeviceSensorResult">
+        <include refid="selectDeviceSensorVo"/>
+        where ds.sensor_id = #{sensorId}
+    </select>
+
+    <select id="selectByDeviceNumberAndSensorCode" resultMap="DeviceSensorResult">
+        <include refid="selectDeviceSensorVo"/>
+        where ds.device_number = #{param1} and ds.sensor_code = #{param2}
+    </select>
+
+    <select id="selectDeviceSensorList" parameterType="com.ruoyi.monitor.domain.DeviceSensor" resultMap="DeviceSensorResult">
+        <include refid="selectDeviceSensorVo"/>
+        <where>
+            <if test="deviceNumber != null">
+                and ds.device_number = #{deviceNumber}
+            </if>
+            <if test="sensorCode != null and sensorCode != ''">
+                and ds.sensor_code like concat('%', #{sensorCode}, '%')
+            </if>
+            <if test="sensorName != null and sensorName != ''">
+                and ds.sensor_name like concat('%', #{sensorName}, '%')
+            </if>
+            <if test="sensorType != null and sensorType != ''">
+                and ds.sensor_type = #{sensorType}
+            </if>
+            <if test="status != null and status != ''">
+                and ds.status = #{status}
+            </if>
+        </where>
+        order by ds.create_time desc
+    </select>
+
+    <select id="selectByDeviceNumber" parameterType="Long" resultMap="DeviceSensorResult">
+        <include refid="selectDeviceSensorVo"/>
+        where ds.device_number = #{deviceNumber} and ds.status = '0'
+        order by ds.sensor_code
+    </select>
+
+    <insert id="insertDeviceSensor" parameterType="com.ruoyi.monitor.domain.DeviceSensor" useGeneratedKeys="true" keyProperty="sensorId">
+        insert into device_sensor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceNumber != null">device_number,</if>
+            <if test="sensorCode != null and sensorCode != ''">sensor_code,</if>
+            <if test="sensorName != null and sensorName != ''">sensor_name,</if>
+            <if test="sensorType != null">sensor_type,</if>
+            <if test="unit != null">unit,</if>
+            <if test="collectInterval != null">collect_interval,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceNumber != null">#{deviceNumber},</if>
+            <if test="sensorCode != null and sensorCode != ''">#{sensorCode},</if>
+            <if test="sensorName != null and sensorName != ''">#{sensorName},</if>
+            <if test="sensorType != null">#{sensorType},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="collectInterval != null">#{collectInterval},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateDeviceSensor" parameterType="com.ruoyi.monitor.domain.DeviceSensor">
+        update device_sensor
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceNumber != null">device_number = #{deviceNumber},</if>
+            <if test="sensorCode != null and sensorCode != ''">sensor_code = #{sensorCode},</if>
+            <if test="sensorName != null and sensorName != ''">sensor_name = #{sensorName},</if>
+            <if test="sensorType != null">sensor_type = #{sensorType},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="collectInterval != null">collect_interval = #{collectInterval},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </trim>
+        where sensor_id = #{sensorId}
+    </update>
+
+    <delete id="deleteDeviceSensorBySensorId" parameterType="Long">
+        delete from device_sensor where sensor_id = #{sensorId}
+    </delete>
+
+    <delete id="deleteDeviceSensorBySensorIds" parameterType="String">
+        delete from device_sensor where sensor_id in 
+        <foreach item="sensorId" collection="array" open="(" separator="," close=")">
+            #{sensorId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.monitor.mapper.SensorDataMapper">
+    
+    <resultMap type="com.ruoyi.monitor.domain.SensorData" id="SensorDataResult">
+        <result property="id"           column="id"            />
+        <result property="sensorId"     column="sensor_id"     />
+        <result property="deviceNumber" column="device_number" />
+        <result property="value"        column="value"         />
+        <result property="dataTime"     column="data_time"     />
+        <result property="createTime"   column="create_time"   />
+        <result property="sensorName"   column="sensor_name"   />
+        <result property="sensorCode"   column="sensor_code"   />
+        <result property="unit"         column="unit"          />
+        <result property="deviceName"   column="device_name"   />
+    </resultMap>
+
+    <sql id="selectSensorDataVo">
+        select sd.id, sd.sensor_id, sd.device_number, sd.value, sd.data_time, sd.create_time,
+               ds.sensor_name, ds.sensor_code, ds.unit, d.name as device_name
+        from sensor_data sd
+        left join device_sensor ds on sd.sensor_id = ds.sensor_id
+        left join device d on sd.device_number = d.device_number
+    </sql>
+
+    <select id="selectSensorDataById" parameterType="Long" resultMap="SensorDataResult">
+        <include refid="selectSensorDataVo"/>
+        where sd.id = #{id}
+    </select>
+
+    <select id="selectSensorDataList" parameterType="com.ruoyi.monitor.domain.SensorData" resultMap="SensorDataResult">
+        <include refid="selectSensorDataVo"/>
+        <where>
+            <if test="sensorId != null">
+                and sd.sensor_id = #{sensorId}
+            </if>
+            <if test="deviceNumber != null">
+                and sd.device_number = #{deviceNumber}
+            </if>
+            <if test="beginDataTime != null and beginDataTime != ''">
+                and sd.data_time &gt;= #{beginDataTime}
+            </if>
+            <if test="endDataTime != null and endDataTime != ''">
+                and sd.data_time &lt;= #{endDataTime}
+            </if>
+        </where>
+        order by sd.data_time desc
+    </select>
+
+    <select id="selectLatestDataByDeviceNumber" parameterType="Long" resultMap="SensorDataResult">
+        select t.id, t.sensor_id, t.device_number, t.value, t.data_time, t.create_time,
+               ds.sensor_name, ds.sensor_code, ds.unit, d.name as device_name
+        from (
+            select sd.*, row_number() over(partition by sd.sensor_id order by sd.data_time desc) as rn
+            from sensor_data sd
+            where sd.device_number = #{deviceNumber}
+        ) t
+        left join device_sensor ds on t.sensor_id = ds.sensor_id
+        left join device d on t.device_number = d.device_number
+        where t.rn = 1
+        order by ds.sensor_code
+    </select>
+
+    <select id="selectLatestDataBySensorId" parameterType="Long" resultMap="SensorDataResult">
+        <include refid="selectSensorDataVo"/>
+        where sd.sensor_id = #{sensorId}
+        order by sd.data_time desc
+        limit 1
+    </select>
+
+    <insert id="insertSensorData" parameterType="com.ruoyi.monitor.domain.SensorData" useGeneratedKeys="true" keyProperty="id">
+        insert into sensor_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sensorId != null">sensor_id,</if>
+            <if test="deviceNumber != null">device_number,</if>
+            <if test="value != null">value,</if>
+            <if test="dataTime != null">data_time,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sensorId != null">#{sensorId},</if>
+            <if test="deviceNumber != null">#{deviceNumber},</if>
+            <if test="value != null">#{value},</if>
+            <if test="dataTime != null">#{dataTime},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <insert id="batchInsertSensorData" parameterType="java.util.List">
+        insert into sensor_data (sensor_id, device_number, value, data_time, create_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.sensorId}, #{item.deviceNumber}, #{item.value}, #{item.dataTime}, sysdate())
+        </foreach>
+    </insert>
+
+    <delete id="deleteSensorDataById" parameterType="Long">
+        delete from sensor_data where id = #{id}
+    </delete>
+
+    <delete id="deleteSensorDataByIds" parameterType="String">
+        delete from sensor_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

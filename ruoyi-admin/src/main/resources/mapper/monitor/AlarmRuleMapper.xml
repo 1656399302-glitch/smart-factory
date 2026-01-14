@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.monitor.mapper.AlarmRuleMapper">
+    
+    <resultMap type="com.ruoyi.monitor.domain.AlarmRule" id="AlarmRuleResult">
+        <result property="ruleId"       column="rule_id"       />
+        <result property="ruleName"     column="rule_name"     />
+        <result property="sensorId"     column="sensor_id"     />
+        <result property="compareType"  column="compare_type"  />
+        <result property="thresholdMin" column="threshold_min" />
+        <result property="thresholdMax" column="threshold_max" />
+        <result property="severity"     column="severity"      />
+        <result property="enabled"      column="enabled"       />
+        <result property="description"  column="description"   />
+        <result property="createBy"     column="create_by"     />
+        <result property="createTime"   column="create_time"   />
+        <result property="updateBy"     column="update_by"     />
+        <result property="updateTime"   column="update_time"   />
+        <result property="sensorName"   column="sensor_name"   />
+        <result property="sensorCode"   column="sensor_code"   />
+        <result property="deviceNumber" column="device_number" />
+        <result property="deviceName"   column="device_name"   />
+    </resultMap>
+
+    <sql id="selectAlarmRuleVo">
+        select ar.rule_id, ar.rule_name, ar.sensor_id, ar.compare_type, ar.threshold_min, 
+               ar.threshold_max, ar.severity, ar.enabled, ar.description, ar.create_by, 
+               ar.create_time, ar.update_by, ar.update_time,
+               ds.sensor_name, ds.sensor_code, ds.device_number, d.name as device_name
+        from alarm_rule ar
+        left join device_sensor ds on ar.sensor_id = ds.sensor_id
+        left join device d on ds.device_number = d.device_number
+    </sql>
+
+    <select id="selectAlarmRuleByRuleId" parameterType="Long" resultMap="AlarmRuleResult">
+        <include refid="selectAlarmRuleVo"/>
+        where ar.rule_id = #{ruleId}
+    </select>
+
+    <select id="selectAlarmRuleList" parameterType="com.ruoyi.monitor.domain.AlarmRule" resultMap="AlarmRuleResult">
+        <include refid="selectAlarmRuleVo"/>
+        <where>
+            <if test="ruleName != null and ruleName != ''">
+                and ar.rule_name like concat('%', #{ruleName}, '%')
+            </if>
+            <if test="sensorId != null">
+                and ar.sensor_id = #{sensorId}
+            </if>
+            <if test="severity != null and severity != ''">
+                and ar.severity = #{severity}
+            </if>
+            <if test="enabled != null and enabled != ''">
+                and ar.enabled = #{enabled}
+            </if>
+            <if test="deviceNumber != null">
+                and ds.device_number = #{deviceNumber}
+            </if>
+        </where>
+        order by ar.create_time desc
+    </select>
+
+    <select id="selectEnabledRulesBySensorId" parameterType="Long" resultMap="AlarmRuleResult">
+        <include refid="selectAlarmRuleVo"/>
+        where ar.sensor_id = #{sensorId} and ar.enabled = '1'
+    </select>
+
+    <insert id="insertAlarmRule" parameterType="com.ruoyi.monitor.domain.AlarmRule" useGeneratedKeys="true" keyProperty="ruleId">
+        insert into alarm_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ruleName != null and ruleName != ''">rule_name,</if>
+            <if test="sensorId != null">sensor_id,</if>
+            <if test="compareType != null and compareType != ''">compare_type,</if>
+            <if test="thresholdMin != null">threshold_min,</if>
+            <if test="thresholdMax != null">threshold_max,</if>
+            <if test="severity != null">severity,</if>
+            <if test="enabled != null">enabled,</if>
+            <if test="description != null">description,</if>
+            <if test="createBy != null">create_by,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ruleName != null and ruleName != ''">#{ruleName},</if>
+            <if test="sensorId != null">#{sensorId},</if>
+            <if test="compareType != null and compareType != ''">#{compareType},</if>
+            <if test="thresholdMin != null">#{thresholdMin},</if>
+            <if test="thresholdMax != null">#{thresholdMax},</if>
+            <if test="severity != null">#{severity},</if>
+            <if test="enabled != null">#{enabled},</if>
+            <if test="description != null">#{description},</if>
+            <if test="createBy != null">#{createBy},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateAlarmRule" parameterType="com.ruoyi.monitor.domain.AlarmRule">
+        update alarm_rule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ruleName != null and ruleName != ''">rule_name = #{ruleName},</if>
+            <if test="sensorId != null">sensor_id = #{sensorId},</if>
+            <if test="compareType != null and compareType != ''">compare_type = #{compareType},</if>
+            threshold_min = #{thresholdMin},
+            threshold_max = #{thresholdMax},
+            <if test="severity != null">severity = #{severity},</if>
+            <if test="enabled != null">enabled = #{enabled},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </trim>
+        where rule_id = #{ruleId}
+    </update>
+
+    <delete id="deleteAlarmRuleByRuleId" parameterType="Long">
+        delete from alarm_rule where rule_id = #{ruleId}
+    </delete>
+
+    <delete id="deleteAlarmRuleByRuleIds" parameterType="String">
+        delete from alarm_rule where rule_id in 
+        <foreach item="ruleId" collection="array" open="(" separator="," close=")">
+            #{ruleId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.monitor.mapper.AlarmRecordMapper">
+    
+    <resultMap type="com.ruoyi.monitor.domain.AlarmRecord" id="AlarmRecordResult">
+        <result property="alarmId"      column="alarm_id"      />
+        <result property="ruleId"       column="rule_id"       />
+        <result property="deviceNumber" column="device_number" />
+        <result property="sensorId"     column="sensor_id"     />
+        <result property="alarmTime"    column="alarm_time"    />
+        <result property="alarmValue"   column="alarm_value"   />
+        <result property="severity"     column="severity"      />
+        <result property="status"       column="status"        />
+        <result property="handledBy"    column="handled_by"    />
+        <result property="handledTime"  column="handled_time"  />
+        <result property="remark"       column="remark"        />
+        <result property="createTime"   column="create_time"   />
+        <result property="ruleName"     column="rule_name"     />
+        <result property="sensorName"   column="sensor_name"   />
+        <result property="sensorCode"   column="sensor_code"   />
+        <result property="deviceName"   column="device_name"   />
+        <result property="unit"         column="unit"          />
+    </resultMap>
+
+    <sql id="selectAlarmRecordVo">
+        select arc.alarm_id, arc.rule_id, arc.device_number, arc.sensor_id, arc.alarm_time, 
+               arc.alarm_value, arc.severity, arc.status, arc.handled_by, arc.handled_time, 
+               arc.remark, arc.create_time,
+               ar.rule_name, ds.sensor_name, ds.sensor_code, ds.unit, d.name as device_name
+        from alarm_record arc
+        left join alarm_rule ar on arc.rule_id = ar.rule_id
+        left join device_sensor ds on arc.sensor_id = ds.sensor_id
+        left join device d on arc.device_number = d.device_number
+    </sql>
+
+    <select id="selectAlarmRecordByAlarmId" parameterType="Long" resultMap="AlarmRecordResult">
+        <include refid="selectAlarmRecordVo"/>
+        where arc.alarm_id = #{alarmId}
+    </select>
+
+    <select id="selectAlarmRecordList" parameterType="com.ruoyi.monitor.domain.AlarmRecord" resultMap="AlarmRecordResult">
+        <include refid="selectAlarmRecordVo"/>
+        <where>
+            <if test="deviceNumber != null">
+                and arc.device_number = #{deviceNumber}
+            </if>
+            <if test="sensorId != null">
+                and arc.sensor_id = #{sensorId}
+            </if>
+            <if test="severity != null and severity != ''">
+                and arc.severity = #{severity}
+            </if>
+            <if test="status != null and status != ''">
+                and arc.status = #{status}
+            </if>
+            <if test="beginAlarmTime != null and beginAlarmTime != ''">
+                and arc.alarm_time &gt;= #{beginAlarmTime}
+            </if>
+            <if test="endAlarmTime != null and endAlarmTime != ''">
+                and arc.alarm_time &lt;= #{endAlarmTime}
+            </if>
+        </where>
+        order by arc.alarm_time desc
+    </select>
+
+    <select id="selectActiveAlarm" resultMap="AlarmRecordResult">
+        <include refid="selectAlarmRecordVo"/>
+        where arc.rule_id = #{ruleId} and arc.sensor_id = #{sensorId} and arc.status != 'resolved'
+        limit 1
+    </select>
+
+    <insert id="insertAlarmRecord" parameterType="com.ruoyi.monitor.domain.AlarmRecord" useGeneratedKeys="true" keyProperty="alarmId">
+        insert into alarm_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ruleId != null">rule_id,</if>
+            <if test="deviceNumber != null">device_number,</if>
+            <if test="sensorId != null">sensor_id,</if>
+            <if test="alarmTime != null">alarm_time,</if>
+            <if test="alarmValue != null">alarm_value,</if>
+            <if test="severity != null">severity,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ruleId != null">#{ruleId},</if>
+            <if test="deviceNumber != null">#{deviceNumber},</if>
+            <if test="sensorId != null">#{sensorId},</if>
+            <if test="alarmTime != null">#{alarmTime},</if>
+            <if test="alarmValue != null">#{alarmValue},</if>
+            <if test="severity != null">#{severity},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateAlarmRecord" parameterType="com.ruoyi.monitor.domain.AlarmRecord">
+        update alarm_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alarmTime != null">alarm_time = #{alarmTime},</if>
+            <if test="alarmValue != null">alarm_value = #{alarmValue},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="handledBy != null">handled_by = #{handledBy},</if>
+            <if test="handledTime != null">handled_time = #{handledTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where alarm_id = #{alarmId}
+    </update>
+
+    <delete id="deleteAlarmRecordByAlarmId" parameterType="Long">
+        delete from alarm_record where alarm_id = #{alarmId}
+    </delete>
+
+    <delete id="deleteAlarmRecordByAlarmIds" parameterType="String">
+        delete from alarm_record where alarm_id in 
+        <foreach item="alarmId" collection="array" open="(" separator="," close=")">
+            #{alarmId}
+        </foreach>
+    </delete>
+</mapper>
