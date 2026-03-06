@@ -9,7 +9,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
-const name = process.env.VUE_APP_TITLE || "合作创新平台"; // 网页标题
+const name = process.env.VUE_APP_TITLE || "智能工厂数字孪生管理系统"; // 网页标题
 
 const port = process.env.port || process.env.npm_config_port || 80; // 端口
 

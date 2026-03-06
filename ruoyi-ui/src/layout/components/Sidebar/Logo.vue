@@ -18,7 +18,6 @@
       >
         <img v-if="logo" :src="logo" class="sidebar-logo" />
         <h1
-          v-else
           class="sidebar-title"
           :style="{
             color:
@@ -67,10 +66,12 @@ export default {
     sideTheme() {
       return this.$store.state.settings.sideTheme;
     },
+    title() {
+      return "智能工厂数字孪生管理系统";
+    },
   },
   data() {
     return {
-      title: this.$store.getters["settings/appTitle"],
       logo: logoImg,
     };
   },

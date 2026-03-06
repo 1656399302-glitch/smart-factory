@@ -14,7 +14,7 @@ const {
 
 const storageSetting = JSON.parse(localStorage.getItem("layout-setting")) || "";
 const state = {
-  appTitle: process.env.VUE_APP_TITLE || "合作创新平台",
+  appTitle: process.env.VUE_APP_TITLE || "智能工厂数字孪生管理系统",
   title: "",
   theme: storageSetting.theme || "#13C2C2",
   sideTheme: storageSetting.sideTheme || sideTheme,
